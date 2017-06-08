@@ -1,0 +1,144 @@
+! *****************************************************************************
+!
+!                  Sample START.ANS file provided by Ansys, Inc.
+!                     for the ANSYS Program
+!                                    8/07/2002
+!
+! All of the commands included in this file are commented.  If you want to
+! have any command executed at ANSYS start-up, simply remove the ! from the
+! beginning of the line.
+!
+!
+!/NOPR                            ! Suppresses printout of the START.ANS file
+!
+!
+! Suggested ANSYS abbreviations for the Toolbar:
+!
+! *ABBR,REPLOT  ,/REPLOT           ! Replots the last graphics display
+! *ABBR,ISO     ,/VIEW,,1,1,1      ! Changes the view to isometric
+! *ABBR,FRONT   ,/VIEW,,0,0,1      ! Changes the view to front view 
+! *ABBR,VECTOR  ,/DEVICE,VECT,ON   ! Specifies vector mode for graphics displays
+! *ABBR,RASTER  ,/DEVICE,VECT,OFF  ! Specifies raster mode for graphics displays
+! *ABBR,NOERASE ,/NOERASE          ! Does not erase the screen between plots
+! *ABBR,ERASE   ,/ERASE            ! Erases the screen between plots
+! *ABBR,HID_LINE,Fnc_Pl_Hidden     ! Brings up dialog box for hidden-line options
+! *ABBR,INFO-ON ,/PLOPTS,INFO,ON   ! Turn the legend information on
+! *ABBR,INFO-OFF,/PLOPTS,INFO,OFF  ! Turn the legend information off
+! *abbr,RESU_ABR,Fnc_ABBRESU       ! Brings up a dialog box to read an
+                                  !  abbreviation file
+!
+!
+! The next abbreviations are system-dependent:
+!
+! To invoke a system editor: 
+!*ABBR,SYS_EDIT,/SYS,xterm -title 'ANSYS  vi_Editor' -e vi &    ! UNIX
+!*ABBR,SYS_EDIT,/SYS,start notepad                              ! Windows-NT
+!
+! To bring up a system calculator:
+!*ABBR,CALCULAT,/SYS,xcalc -stipple -geom -0+0 &                ! UNIX
+!*ABBR,CALCULAT,/SYS,start calc                                 ! Windows-NT
+!*ABBR,CALCLTR ,/SYS,xhpcalc -geom -0+0 &                       ! HP
+!
+!
+! It is possible to have multiple toolbars by having different abbreviation
+! files.  (The files must be available in a directory on your system.)  The way
+! to access them is to have the following type of abbreviations defined INSIDE
+! the initial (main) abbreviation file.
+!
+!*ABBR,MAINTBAR,ABBRESUM,NEW,MAINTBAR,ABBR   ! Restores the main Toolbar
+!*ABBR,GRPHTBAR,ABBRESUM,NEW,GRPHTBAR,ABBR   ! Restores a Toolbar customized
+                                             !  for graphics manipulations
+!*ABBR,POSTTBAR,ABBRESUM,NEW,POSTTBAR,ABBR   ! Restores a Toolbar customized
+                                             !  for postprocessing
+!
+!
+! There are five predefined ANSYS abbreviations in the Toolbar.  The following
+! commands can be used to remove them (by removing the exclamation point).
+!
+! *ABBR, SAVE_DB
+! *ABBR, RESUM_DB
+! *ABBR, QUIT
+! *ABBR, POWRGRPH
+! *ABBR, E-CAE
+!
+! Once the commands are turned off per above, they can be turned back
+! on again in a different order by the following commands (remove the !).
+!
+! *ABBR, SAVE_DB , SAVE
+! *ABBR, QUIT    , Fnc_/EXIT
+! *ABBR, RESUM_DB, RESUME
+! *ABBR, E-CAE,    SIMUTIL
+! *ABBR, POWRGRPH, Fnc_/GRAPHICS
+
+
+! An abbreviation can be added to bring up your web browser with www.ansys.com
+! by adding the following command
+!*ABBR, ANSYSWEB, Fnc_HomePage
+!
+
+
+! Initial ANSYS parameters:
+!PI=ACOS(-1)
+!
+!
+
+
+! The /MSTART command controls which GUI components initially appear
+! at program start-up.
+!
+!/MSTART,MAIN,OFF    ! Suppresses Main Menu       (ON by default)
+!/MSTART,INPUT,OFF   ! Suppresses Input Window    (ON by default)
+!/MSTART,GRPH,OFF    ! Suppresses Graphics Window (ON by default)
+!/MSTART,TOOL,OFF    ! Suppresses Toolbar         (ON by default)
+!/MSTART,UTIL,OFF     ! Suppresses Utility Menu    (ON by default)
+!
+!/MSTART,ZOOM,ON     ! Displays Pan-Zoom-Rotate dialog box
+!/MSTART,WORK,ON     ! Displays Offset Working Plane dialog box
+!/MSTART,WPSET,ON    ! Displays Working Plane Settings dialog box
+!/MSTART,ABBR,ON     ! Displays Edit Abbreviations dialog box
+!/MSTART,PARM,ON     ! Displays Scalar Parameters dialog box
+!/MSTART,SELE,ON     ! Displays Select Entities dialog box
+!/MSTART,ANNO,ON     ! Displays Annotation dialog box
+!/MSTART,HARD,ON     ! Displays Hard Copy dialog box
+! /MSTART,HELP,ON     ! Displays ANSYS Help System
+!
+! The /MPLIB command controls the default path used to find and display 
+! the material library files.
+!
+! UNIX example:
+! /MPLIB,READ,/ansys_inc/v170/ansys/matlib
+!
+! PC example:
+! NOTE: Pathname must be enclosed in SINGLE quotes
+! /MPLIB,READ,'C:\Program Files\Ansys Inc\v170\ansys\matlib'
+!
+!/GOPR             ! Activates the printout previously suppressed by /NOPR
+!
+!/UIS,BORD,1,2,3    ! Sets Dynamic mode button order to default 
+!                    (left= 1,center= 2,right= 3)
+!                    Button 1 is xy translate in dynamic mode
+!                    Button 2 is zoom and rotate about view vector
+!                    Button 3 is rotate about x or y axis      
+!
+! ***********************  End of sample START.ANS file  ***********************
+! /PSEARCH,'C:\ProgramData\AnsysPlugin\Macs'
+/PSEARCH,'D:\AnsysPlugin\Macs'
+*ABBR, SAVE_DB , SAVE
+*ABBR, QUIT    , Fnc_/EXIT
+*ABBR, RESUM_DB, RESUME
+*ABBR, POWRGRPH, Fnc_/GRAPHICS
+*ABBR,材料库,ManagerMaterial
+*ABBR,模型导入,ImportParaSolid
+*ABBR,结果导出,ExportResult
+! *ABBR,集中力,PressureConcentrated
+! *ABBR,静压力,PressureStatic
+! *ABBR,动水压,PressureDynamic
+! *ABBR,浪压力,PressureWave
+! *ABBR,扬压力,PressureUpLift
+*ABBR,组件管理器,ManagerComponent
+! *ABBR,反应谱分析,SeismicSpectrum
+! *ABBR,地震时程分析,SeismicTimeHistory
+*ABBR,载荷工具集,ToolKitLoad
+*ABBR,工况管理器,ManagerCase
+*ABBR,抗震计算,ToolKitSeismic
+

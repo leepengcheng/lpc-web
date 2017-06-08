@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FluentParser</class>
+ <widget class="QMainWindow" name="FluentParser">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>775</width>
+    <height>505</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btn_Exit">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>420</y>
+      <width>90</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_Export">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>420</y>
+      <width>90</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>开始导出</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_mesh">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>150</y>
+      <width>341</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>网格转换</string>
+    </property>
+    <widget class="QLabel" name="label_casFile">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>80</y>
+       <width>251</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>fluent cas网格文件路径:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_cdbFile">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>180</y>
+       <width>28</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_cdbFile">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>190</y>
+       <width>251</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_casFile">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>90</y>
+       <width>28</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_projectDetail">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>241</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_casFile">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>251</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_projectDetail">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>项目描述</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_cdbFile">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>251</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>输出cdb网格文件路径:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_result">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>10</y>
+      <width>371</width>
+      <height>381</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>结果转换</string>
+    </property>
+    <widget class="QLabel" name="label_fluentfile">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>fluent txt结果文件路径:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_txtFile">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_txtFile">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>40</y>
+       <width>28</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QTreeWidget" name="treeView">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>170</y>
+       <width>141</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QPushButton" name="btn_xmlFile">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>320</y>
+       <width>28</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_xmlFile">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>310</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>输出xml结果文件路径:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_xmlFile">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>330</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSplitter" name="splitter_Units">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>250</y>
+       <width>141</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QLabel" name="label_Units">
+      <property name="text">
+       <string>输出单位</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_Units"/>
+    </widget>
+    <widget class="QSplitter" name="splitter_caseID">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>200</y>
+       <width>141</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QLabel" name="label_caseID">
+      <property name="text">
+       <string>工况序号</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_caseID"/>
+    </widget>
+    <widget class="QSplitter" name="splitter_caseName">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>100</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QLabel" name="label_caseName">
+      <property name="text">
+       <string>工况名称</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_caseName"/>
+    </widget>
+    <widget class="QSplitter" name="splitter_caseDetail">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QLabel" name="label_caseDetail">
+      <property name="text">
+       <string>工况描述</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_caseDetail"/>
+    </widget>
+    <zorder>splitter_Units</zorder>
+    <zorder>splitter_caseID</zorder>
+    <zorder>splitter_caseName</zorder>
+    <zorder>splitter_caseDetail</zorder>
+    <zorder>label_fluentfile</zorder>
+    <zorder>lineEdit_txtFile</zorder>
+    <zorder>btn_txtFile</zorder>
+    <zorder>treeView</zorder>
+    <zorder>btn_xmlFile</zorder>
+    <zorder>label_xmlFile</zorder>
+    <zorder>lineEdit_xmlFile</zorder>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>341</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>转换设置</string>
+    </property>
+    <widget class="QCheckBox" name="checkBox_mesh">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>网格转换</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_result">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>30</y>
+       <width>131</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>结果转换</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_projectName">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>90</y>
+       <width>301</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_projectName">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>项目名称</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>321</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>775</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
