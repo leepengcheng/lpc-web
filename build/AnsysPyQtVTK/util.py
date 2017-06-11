@@ -74,7 +74,7 @@ def getAngleFrom2Vector(vec1,vec2):
     return angle
 
 
-def getColorTable(num):
+def getColorTable(num): 
     "获得颜色条的颜色映射表"
     colorTable = vtk.vtkLookupTable()
     colorTable.SetNumberOfColors(num)
@@ -211,7 +211,7 @@ def createPointActors(pts,color=YELLOW,r=0.5):
     return pointActors           
 
 
-def getUniformPoints(start,end,space,has_end=True):
+def getUniformPoints(start,end,space,has_begin=True,has_end=True):
     '''
     求起点终点之间的等距分布点
     @has_start:包含起点
@@ -226,7 +226,10 @@ def getUniformPoints(start,end,space,has_end=True):
         for step in steps:
             pt=start + step * vec
             pts.append(pt)
-    pts.append(end) if has_end else None
+    if not has_begin:
+        del pts[0]
+    if has_end:
+        pts.append(end)
     return pts
 
 

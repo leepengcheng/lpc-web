@@ -114,9 +114,6 @@ class MainWindow(QtWidgets.QMainWindow):
         end = getLineEidtData(self, "end")  #终点
         xspace = getLineEidtData(self, "xspace")  #X向/径向间距
         yspace = getLineEidtData(self, "yspace")  #Y向/环向间距
-        if None in (center, start, end, xspace, yspace):
-            self.ui.statusbar.showMessage(u"请输入柱坐标系的圆心 起点 终点位置 X间距 Y间距", 2000)
-            return
         axis_actor=createAxisActor(center, start, end) #创建坐标系
         sec_actor = self.secplot.createPolarLineActor(center, start, end, xspace,
                                                    yspace)

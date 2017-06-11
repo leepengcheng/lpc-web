@@ -187,11 +187,11 @@ class Section(object):
                         eclip_wpts[(n2, n2)] = 0.5
                     else:
                         scale = abs(p1[2] * 1.0 / (p2[2] - p1[2]))  #比例位置
-                        if TOL1 < scale < TOL2:
+                        if MIN < scale < MAX:
                             flag = (n1, n2)
                         #如果不位于容差范围
                         else:
-                            flag = (n1, n1) if scale < TOL1 else (n2, n2)
+                            flag = (n1, n1) if scale < MIN else (n2, n2)
                             scale = 0.5
                         eclip_wpts[flag] = scale  #存入eclip_wpts字典
             return eclip_wpts
@@ -288,6 +288,8 @@ class Section(object):
 
     def getPolarPoints(self, center, matrix):
         "获得射线和网格的边界交点并排序"
+        if not "secOuterlines" in vars(self):
+            self.getSectionOuterLines()  #获得截面外轮廓线
         polar_pts = {}
         for line in self.secOuterlines:
               #转换面内节点坐标到matrix上
@@ -300,11 +302,11 @@ class Section(object):
                     polar_pts[(line[1], line[1])] = (p2[0], 0.5)
                 else:
                     scale = abs(p1[1] * 1.0 / (p2[1] - p1[1]))
-                    if TOL1 < scale < TOL2:
+                    if MIN < scale < MAX:
                         flag = line
                     else:
                         flag = (line[0],
-                                line[0]) if scale < TOL1 else (line[1],
+                                line[0]) if scale < MIN else (line[1],
                                                                line[1])
                         scale = 0.5
                     pt_x = self.getIntersection(scale, p1, p2)[0]  #交点在局部坐标系X坐标
@@ -347,11 +349,11 @@ class Section(object):
                         eclip_wpts[(n2, n2)] = 0.5
                     else:
                         scale = abs(p1[2] * 1.0 / (p2[2] - p1[2]))  #比例位置
-                        if TOL1 < scale < TOL2:
+                        if MIN < scale < MAX:
                             flag = (n1, n2)
                         #如果不位于容差范围
                         else:
-                            flag = (n1, n1) if scale < TOL1 else (n2, n2)
+                            flag = (n1, n1) if scale < MIN else (n2, n2)
                             scale = 0.5
                         eclip_wpts[flag] = scale  #存入eclip_wpts字典
             return eclip_wpts
@@ -359,10 +361,9 @@ class Section(object):
     def createPolarLineActor(self, center, start, end, xspace=30, yspace=30):
         "创建柱坐标扫描线"
         polar_actors = []
-        #获得夹角
-        angle = getAngleFrom2Vector(start - center, end - center)
-        self.getSectionOuterLines()  #获得截面外轮廓线
         polar_matrix = getTMatrix(center, start, end)  #获得柱坐标系的局部矩阵
+        angle = getAngleFrom2Vector(start - center, end - center) #获得夹角
+        print "angle is %s"%angle
         isInSec=isPointInSection(center,self.sec_polys,polar_matrix) #圆心是否在单元内
         for ang in np.append(np.arange(0, angle, yspace), angle):
             #绕Z旋转ysapce
@@ -375,26 +376,29 @@ class Section(object):
                 scale=pts_dict[p][1] #比例
                 pt=self.getIntersection(scale,p0,p1)  #交点1-总体坐标
                 pts_list.append(pt)
-            pts_num=len(pts_list)                     #边界交点的个数
-            index=0 if isInSec else 1
-            if pts_num>1:
-                for i in xrange(index,pts_num - 1):
+            #如果圆心不在单元截面内,则删除圆心点
+            if not isInSec:
+                del pts_list[0] 
+            pts_num=len(pts_list)   #边界节点个数
+            if pts_num>=2:
+                #创建扫描线
+                for i in xrange(pts_num - 1):
                     pstart=pts_list[i]
                     pend=pts_list[i+1]
                     pmid=0.5*(pstart+pend)
-                    if isPointInSection(pmid,self.sec_polys,polar_matrix):
+                    if isPointInSection(pmid,self.sec_polys,ang_matrix):
                         line_actor=createLineActor(pstart,pend)
-                        polar_actors.append(line_actor) # 创建线段
-                #生成均匀分布点
-                pts_uniform=getUniformPoints(pts_list[index],pts_list[-1],xspace)
-                pts_uniform.extend(pts_list[index:])
-                pts_uniform_tuple=[a2T(p,3)  for p in pts_uniform]
-                pts_uniform_set=set(pts_uniform_tuple)
-                for pt in pts_uniform_set:
+                        polar_actors.append(line_actor)
+                #创建边界节点
+                for pt in pts_list:
+                        point_actor=createPointActors([pt],r=1)
+                        polar_actors.extend(point_actor) 
+                #生成并创建均匀分布点
+                pts_uniform=getUniformPoints(pts_list[0],pts_list[-1],xspace,False,False)
+                for pt in pts_uniform:
+                    #判断均匀分布点是否在截面上
                     if isPointInSection(pt,self.sec_polys,ang_matrix):
                         point_actor=createPointActors([pt],r=1)
-                        polar_actors.extend(point_actor) # 创建线段
-            else:
-                print ang
+                        polar_actors.extend(point_actor) 
         return polar_actors
 
