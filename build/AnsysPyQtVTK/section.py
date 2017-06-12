@@ -246,19 +246,27 @@ class Section(object):
             r3[r] = r1[r] + (r2[r] - r1[r]) * scale
         return NodeResult(r3)
 
-    def showNodeData(self, nloc, display="Seqv"):
-        # n_result= self.sec_points[nloc]
-        # print "*" * 20+u"<输出类型: %s >"%display+"*" * 20
-        # print u"总体坐标系:", nloc
-        # print u"应力结果值:",n_result.stress().round(5)
-        # print u"应力结果值:",n_result.stress(key="Seqv").round(5)
-        # print u"位移结果值:",n_result.displace().round(5)
-
-        # print u"局部坐标系:", tuple(self.matrix.dot(nloc + (1, ))[:3].round(3).tolist())
-        # print u"应力结果值:",n_result.stress(self.matrix[:3,:3]).round(5)
-        # print u"位移结果值:",n_result.displace(self.matrix[:3,:3]).round(5)
-        print "*" * 50
-        # self.createNewLine((0,0,0),nloc,10)
+    def getNodeData(self, nloc, display="Seqv"):
+        n_result= self.sec_points[nloc]
+        items=RESULTS.keys()
+        data=u"总体坐标系:\n"
+        data+="XYZ:(%.3f,%.3f,%.3f)\n"%nloc
+        for item in items:
+            if item.startswith("U"):
+                data+="%s:%s\n"%(item,n_result.displace(key=item))
+            elif item.startswith("S"):
+                data+="%s:%s\n"%(item,n_result.stress(key=item))
+        data+="*"*20+"\n"
+        data+=u"局部坐标系:\n"
+        mat=self.matrix[:3,:3]
+        data+="XYZ:(%.3f,%.3f,%.3f)\n"%a2T(getNodeTFXYZ(nloc,self.matrix))
+        for item in items:
+            if item.startswith("U"):
+                data+="%s:%s\n"%(item,n_result.displace(mat,key=item))
+            elif item.startswith("S"):
+                data+="%s:%s\n"%(item,n_result.stress(mat,key=item))
+        return data
+        
 
     def updateLocalMatrix(self, center, node):
         vec_z = self.matrix[:, :3]
@@ -363,7 +371,6 @@ class Section(object):
         polar_actors = []
         polar_matrix = getTMatrix(center, start, end)  #获得柱坐标系的局部矩阵
         angle = getAngleFrom2Vector(start - center, end - center) #获得夹角
-        print "angle is %s"%angle
         isInSec=isPointInSection(center,self.sec_polys,polar_matrix) #圆心是否在单元内
         for ang in np.append(np.arange(0, angle, yspace), angle):
             #绕Z旋转ysapce

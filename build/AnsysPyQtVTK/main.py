@@ -5,24 +5,15 @@ import vtk
 from util import *
 from domain import *
 from config import *
+from ConfigParser import ConfigParser
 from collections import defaultdict
 from dataparser import DataParser
 from model import Model
 from section import Section
 #界面部分
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow,QFileDialog
 from ui.ui_main import Ui_mainWindow
-
-path = os.path.dirname(__file__)
-cdb, xml = [os.path.join(path, "data", f) for f in ("block.cdb", "block.xml")]
-data = DataParser(cdb, xml)
-#解析数据
-points = data.parsePoints()
-elements = data.parseElements()
-results = data.parseResults()
-boundary = data.parseBounaryCells()
-
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -50,9 +41,13 @@ class MainWindow(QtWidgets.QMainWindow):
                       self.ui.edit_start_z),
             "end": (self.ui.edit_end_x, self.ui.edit_end_y,
                     self.ui.edit_end_z),
+            "p123":(self.ui.edit_p1,self.ui.edit_p2,self.ui.edit_p3),
+            "cdb":(self.ui.edit_cdbfile,),
+            "xml":(self.ui.edit_xmlfile,),
             "xspace": (self.ui.edit_xspace, ),
             "yspace": (self.ui.edit_yspace, )
         }
+        self.loadConfig()#加载配置
 
     def leftButtonClick(self, obj, event):
         '''
@@ -66,8 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.sel.current:
             color = self.sel.getColor()
             if color == YELLOW:  #节点
-                self.executeUserCommand(sender="Node")  #执行节点命令
-                # self.showNodeData(node_wxyz,"Sx")
+                self.executeUserCommand()  #执行节点命令
                 self.sel.cancelhightLight()  #取消高亮上个对象
                 self.sel.hightLight()  #高亮当前对象
                 self.sel.update()  #将选择的对象加入previous
@@ -78,25 +72,30 @@ class MainWindow(QtWidgets.QMainWindow):
         '''
         初始化信号槽
         '''
-        self.ui.btn_section.clicked.connect(self.showSection)
-        self.ui.btn_model.clicked.connect(self.showModel)
-        self.ui.btn_cylinder.clicked.connect(self.showPolarLine)
-        self.ui.btn_descarte.clicked.connect(self.hideActors)
+        self.ui.check_section.clicked.connect(self.showSection)
+        self.ui.check_model.clicked.connect(self.showModel)
+        self.ui.check_polar.clicked.connect(self.showPolarLine)
+        self.ui.btn_saveconf.clicked.connect(self.saveConfig)
+        self.ui.btn_cdbfile.clicked.connect(lambda:self.getOpenFilePath("cdb"))
+        self.ui.btn_xmlfile.clicked.connect(lambda:self.getOpenFilePath("xml"))
         #选择圆心 起点 终点
         self.ui.btn_center.clicked.connect(
             lambda: self.setCommand(CMD.GET_CENTER))
         self.ui.btn_start.clicked.connect(
             lambda: self.setCommand(CMD.GET_START))
         self.ui.btn_end.clicked.connect(lambda: self.setCommand(CMD.GET_END))
+        self.ui.btn_selnode.clicked.connect(lambda: self.setCommand(CMD.WORLD_XYZ))
 
-    def executeUserCommand(self, sender):
+    def executeUserCommand(self, sender="Node"):
         #执行命令
         wxyz = self.sel.getCenter()
         if sender == "Node":
             if self.cmd == CMD.WORLD_XYZ:
-                print wxyz
+                info=self.secplot.getNodeData(wxyz)
+                self.ui.edit_result.setPlainText(info)
             elif self.cmd == CMD.LOCAL_STRESS:
-                print self.showNodeData(wxyz)
+                info=self.secplot.getnodeData(wxyz)
+                setLineEidtText(self, [info], "result")
             elif self.cmd == CMD.HIDE_THENODE:
                 self.sel.current.SetVisibility(False)  #隐藏
             elif self.cmd == CMD.GET_CENTER:
@@ -106,48 +105,74 @@ class MainWindow(QtWidgets.QMainWindow):
             elif self.cmd == CMD.GET_END:
                 setLineEidtText(self, wxyz, "end")
 
-    def showPolarLine(self):
+    def showPolarLine(self,isshow):
         "创建柱坐标数值输出线"
-        actors=[]
-        center = getLineEidtData(self, "center")  #圆心
-        start = getLineEidtData(self, "start")  #起点
-        end = getLineEidtData(self, "end")  #终点
-        xspace = getLineEidtData(self, "xspace")  #X向/径向间距
-        yspace = getLineEidtData(self, "yspace")  #Y向/环向间距
-        axis_actor=createAxisActor(center, start, end) #创建坐标系
-        sec_actor = self.secplot.createPolarLineActor(center, start, end, xspace,
-                                                   yspace)
-        actors.append(axis_actor)
-        actors.extend(sec_actor)                              
-        self.showActors("polar", actors)
+        if isshow:
+            actors=[]
+            center = getLineEidtData(self, "center")  #圆心
+            start = getLineEidtData(self, "start")  #起点
+            end = getLineEidtData(self, "end")  #终点
+            xspace = getLineEidtData(self, "xspace")  #X向/径向间距
+            yspace = getLineEidtData(self, "yspace")  #Y向/环向间距
+            params=(center, start, end, xspace,yspace)
+            for param in params:
+                if param is None:
+                    showMessage(self,u"请输入扫描线的圆心-起点-终点-径向和环向间距!")
+                    self.ui.check_polar.setChecked(False)
+                    return
+            #显示夹角
+            self.ui.edit_ange.setText(str(getAngleFrom2Vector(start - center, end - center)))
+            axis_actor=createAxisActor(center, start, end) #创建坐标系
+            sec_actor = self.secplot.createPolarLineActor(*params)
+            actors.append(axis_actor)
+            actors.extend(sec_actor)                              
+            self.showActors("polar", actors)
+        else:
+            self.hideActors("polar")
 
-    def showSection(self):
+    def showSys(self)
+
+    def showSection(self,isshow):
         '''
         创建并显示截面
         '''
-        p1, p2, p3 = 265, 258, 95
-        actors = []
-        self.secplot = Section(points, elements, results)  #初始化
-        actors.append(
-            self.secplot.createSectionActor(p1, p2, p3, showLine=True))  #创建截面
-        actors.extend(self.secplot.createSectionNodeActors())  #创建交互节点
-        self.showActors("section", actors, True)  #添加并显示
+        self.getInputData()
+        if isshow:
+            p123 = getLineEidtData(self,"p123",int)
+            #如果没有输入截面节点
+            if p123 is None:
+                showMessage(self,CMD.GET_SEC)
+                self.ui.check_section.setChecked(False)
+                return
+            p1,p2,p3=p123.tolist()
+            actors=[]
+            self.secplot = Section(self.points, self.elements, self.results)  #初始化
+            sec_actor=self.secplot.createSectionActor(p1, p2, p3, showLine=True)
+            secnode_actor=self.secplot.createSectionNodeActors()
+            actors.append(sec_actor)    #创建截面
+            actors.extend(secnode_actor)  #创建交互节点
+            self.showActors("section", actors, True)  #添加并显示
+        else:
+            self.hideActors("section")
 
-    def showModel(self):
+    def showModel(self,isshow):
         '''
         创建并显示网格模型
         '''
-        actors = []
-        self.model = Model(points, elements, results, boundary)
-        actors.append(self.model.createMeshActor(showLine=True))  #显示网格模型
-        actors.append(self.model.createBoundaryActor("10"))  #显示边界
-        self.showActors("model", actors, True)
+        self.getInputData()
+        if isshow:
+            actors = []
+            self.model = Model(self.points, self.elements, self.results, self.boundary)
+            actors.append(self.model.createMeshActor(showLine=True))  #显示网格模型
+            actors.append(self.model.createBoundaryActor("10"))  #显示边界
+            self.showActors("model", actors, True)
+        else:
+            self.hideActors("model")
             
-        
 
     def showActors(self, actorname, actors, resetCamera=False):
         '''
-        显示并刷新对象
+        创建并刷新对象
         '''
         sel_actors = self.actors[actorname]
         for actor in sel_actors:
@@ -164,17 +189,69 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.ui.vtkWidget.repaint()
         self.ui.vtkWidget.update()  #更新窗体
 
-    def hideActors(self):
+    def hideActors(self,module):
         "隐藏对象"
-        for actor in self.actors['polar']:
+        for actor in self.actors[module]:
             actor.SetVisibility(False)
         # self.ui.vtkWidget.repaint()
         self.ui.vtkWidget.update()  #更新窗体
 
     def setCommand(self, cmd):
         "设置命令"
-        self.ui.statusbar.showMessage(cmd)
+        showMessage(self,cmd)
         self.cmd = cmd
+
+    def getInputData(self):
+        cdb=getLineEidtData(self,"cdb",str)
+        xml=getLineEidtData(self,"xml",str)
+        data = DataParser(cdb, xml)
+        #解析数据
+        if not "points" in vars(self):
+            self.points = data.parsePoints()
+        if not "elements" in vars(self):    
+            self.elements = data.parseElements()
+        if not "results" in vars(self):
+            self.results = data.parseResults()
+        if not "boundary" in vars(self):
+            self.boundary = data.parseBounaryCells()
+
+    def getOpenFilePath(self,dtype):
+        if dtype=="cdb":
+            f=QFileDialog.getOpenFileName(self,u"选择cdb网格文件",".","cdb files(*.cdb)")[0]
+            if f.strip()!="":
+                self.ui.edit_cdbfile.setText(f)
+        elif dtype=="xml":
+            f=QFileDialog.getOpenFileName(self,u"选择xml结果文件",".","xml files(*.xml)")[0]
+            if f.strip()!="":
+                self.ui.edit_xmlfile.setText(f)
+    
+    def loadConfig(self):
+        fcf=os.path.join(os.path.dirname(__file__),"db.conf")
+        conf=ConfigParser()
+        conf.read(fcf)
+        self.ui.edit_cdbfile.setText(conf.get("file","cdb"))
+        self.ui.edit_xmlfile.setText(conf.get("file","xml"))
+        self.ui.edit_xspace.setText(conf.get("section","xspace"))
+        self.ui.edit_yspace.setText(conf.get("section","yspace"))
+        setLineEidtText(self,conf.get("section","center").split(","),"center")
+        setLineEidtText(self,conf.get("section","start").split(","),"start")
+        setLineEidtText(self,conf.get("section","end").split(","),"end")
+        setLineEidtText(self,conf.get("section","p123").split(","),"p123")
+
+    def saveConfig(self):
+        fcf=os.path.join(os.path.dirname(__file__),"db.conf")
+        conf=ConfigParser()
+        conf.read(fcf)
+        conf.set("file","cdb",self.ui.edit_cdbfile.text())
+        conf.set("file","xml",self.ui.edit_xmlfile.text())
+        conf.set("section","xspace",self.ui.edit_xspace.text())
+        conf.set("section","yspace",self.ui.edit_yspace.text())
+        conf.set("section","center","%s,%s,%s"%a2T(getLineEidtData(self,"center")))
+        conf.set("section","start","%s,%s,%s"%a2T(getLineEidtData(self,"start")))
+        conf.set("section","end","%s,%s,%s"%a2T(getLineEidtData(self,"end")))
+        conf.set("section","p123","%s,%s,%s"%a2T(getLineEidtData(self,"p123")))
+        conf.write(open(fcf,"w"))
+
 
 
 if __name__ == "__main__":
@@ -183,3 +260,5 @@ if __name__ == "__main__":
     window.show()
     window.iren.Initialize()
     sys.exit(app.exec_())
+
+

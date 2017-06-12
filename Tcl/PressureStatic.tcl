@@ -394,7 +394,7 @@ proc autoCalculate {args} \
 	}
 	####################<<step size>>###################################
 	if {$args=="Stepsize"} {
-		set stepsize [expr  -$flag*$height*$rw]
+		set stepsize [expr  -$flag*$rw]
 	}
 }
 
@@ -489,7 +489,7 @@ proc apply_load {} \
 	#logging
 	puts "######## Static Pressure APDL Start ############"
 	puts "$cmd_sfcum"
-	puts "SFGRAD,PRES,0,$direction,$toploc,$factor*$stepsize"
+	puts "SFGRAD,PRES,0,$direction,$toploc,$stepsize*$factor"
 	puts "SF,ALL,PRES,0"
 	puts "######## Static Pressure APDL Finish ############"
 	#reshow the temp component

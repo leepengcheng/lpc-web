@@ -100,20 +100,20 @@ def getColorTable(num):
     return colorTable
 
 
-def getLineEidtData(self, sel="center"):
+def getLineEidtData(self, sel="center",dtype=float):
     "获得界面输入框的值并转换为float"
     sel_edits = self.edits[sel]
     xyz = []
     num = len(sel_edits)
     for x in xrange(num):
         sel_text = sel_edits[x].text().strip()
-        if sel_text == "":
+        if len(sel_text) == 0:
             return None
         if num == 1:
-            return float(sel_text)
+            return dtype(sel_text)
         else:
             xyz.append(float(sel_text))
-    return np.array(xyz)
+    return np.array(xyz,dtype=dtype)
 
 def setLineEidtText(self, data, sel="center"):
     "设置界面输入框的文本值"
@@ -121,6 +121,11 @@ def setLineEidtText(self, data, sel="center"):
     for i in xrange(len(sel_edits)):
         sel_edits[i].setText(str(data[i]))
     self.ui.statusbar.clearMessage()
+
+def showMessage(self,msg):
+    "显示消息"
+    self.ui.statusbar.showMessage(msg)
+
 
 def isPointInPoly(pt,poly,matrix):
     "判断点是否在多边形内"

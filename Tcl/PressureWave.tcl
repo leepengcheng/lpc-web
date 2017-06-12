@@ -413,10 +413,12 @@ proc buttonNextEvent {} {
 	#validate  Hcr temp value
 	if {[catch {set t1 [expr ($Lm+2*$pi*$h1cent)/($Lm-2*$pi*$h1cent)]} error]} {
 		set err "Hcr Can Not Be Calculated! "
-	} 
-	if {$t1<=0} {
-		set err "Hcr Can Not Be Calculated! "
+	}  else {
+		if {$t1<=0} {
+			set err "Hcr Can Not Be Calculated! "
+		}
 	}
+
 	#if empty input
 	foreach var [list $H $Lm $h1cent $rw] {
 			if {[string trim $var]==""} {
@@ -488,7 +490,9 @@ proc apply_load {} \
 	set max_val [lindex $nodedata end]
 	set height [expr $max_val-$min_val]
 	
-	set stepsize [expr -$flag*$factor*$pwk/$height]
+	####stepsize##################################
+	# set stepsize [expr -$flag*$factor*$pwk/$height]
+	set stepsize [expr -$flag*$factor*$pwk]
 
 	if {$loadpattern=="Replace"} {
 		set cmd_sfcum "SFCUM,PRES,REPL,1,1,"
