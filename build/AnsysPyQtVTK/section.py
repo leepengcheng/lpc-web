@@ -5,7 +5,7 @@ from domain import *
 from config import *
 from util import *
 from collections import Counter, OrderedDict
-
+import math
 
 class Section(object):
     """截面"""
@@ -247,6 +247,8 @@ class Section(object):
         return NodeResult(r3)
 
     def getNodeData(self, nloc, display="Seqv"):
+        if not nloc in self.sec_points.keys():
+            return ""
         n_result= self.sec_points[nloc]
         items=RESULTS.keys()
         data=u"总体坐标系:\n"
@@ -366,13 +368,13 @@ class Section(object):
                         eclip_wpts[flag] = scale  #存入eclip_wpts字典
             return eclip_wpts
 
-    def createPolarLineActor(self, center, start, end, xspace=30, yspace=30):
+    def createPolarLineActor(self, center, start, end, xspace=30, yspace=30,r=5):
         "创建柱坐标扫描线"
         polar_actors = []
         polar_matrix = getTMatrix(center, start, end)  #获得柱坐标系的局部矩阵
-        angle = getAngleFrom2Vector(start - center, end - center) #获得夹角
+        self.angle = getAngleFrom2Vector(start - center, end - center) #获得夹角
         isInSec=isPointInSection(center,self.sec_polys,polar_matrix) #圆心是否在单元内
-        for ang in np.append(np.arange(0, angle, yspace), angle):
+        for ang in np.append(np.arange(0, self.angle, yspace), self.angle):
             #绕Z旋转ysapce
             ang_matrix = getRotMatrixFromZAxis(ang).dot(polar_matrix)
             #获得扫描线和截面的排序交点的字典
@@ -384,7 +386,7 @@ class Section(object):
                 pt=self.getIntersection(scale,p0,p1)  #交点1-总体坐标
                 pts_list.append(pt)
             #如果圆心不在单元截面内,则删除圆心点
-            if not isInSec:
+            if isInSec is None:
                 del pts_list[0] 
             pts_num=len(pts_list)   #边界节点个数
             if pts_num>=2:
@@ -393,19 +395,38 @@ class Section(object):
                     pstart=pts_list[i]
                     pend=pts_list[i+1]
                     pmid=0.5*(pstart+pend)
-                    if isPointInSection(pmid,self.sec_polys,ang_matrix):
+                    if not isPointInSection(pmid,self.sec_polys,ang_matrix) is None:
                         line_actor=createLineActor(pstart,pend)
                         polar_actors.append(line_actor)
-                #创建边界节点
-                for pt in pts_list:
-                        point_actor=createPointActors([pt],r=1)
-                        polar_actors.extend(point_actor) 
-                #生成并创建均匀分布点
+                #创建均匀分布点
                 pts_uniform=getUniformPoints(pts_list[0],pts_list[-1],xspace,False,False)
+                pts_uniform.extend(pts_list)
                 for pt in pts_uniform:
-                    #判断均匀分布点是否在截面上
-                    if isPointInSection(pt,self.sec_polys,ang_matrix):
-                        point_actor=createPointActors([pt],r=1)
-                        polar_actors.extend(point_actor) 
+                    pts=isPointInSection(pt,self.sec_polys,ang_matrix)
+                    if not pts is None:
+                        pt=pt.round(3)
+                        point_actor=createPointActors([pt],r=r)
+                        polar_actors.extend(point_actor)
+                        self.getCenterResultByIDW(pt,pts)
         return polar_actors
 
+    def getCenterResultByIDW(self,p,pts):
+        '''
+        通过反向距离加权法求解
+        '''
+        nnum=len(pts)
+        p=a2T(p)#转换为tuple
+        dis=[math.sqrt(pow(pt[0]-p[0],2)+pow(pt[1]-p[1],2)) for pt in pts]
+        for i in xrange(nnum):
+            #如果点距小于容差
+            if dis[i]<=MIN:
+                pt=a2T(pts[i])
+                self.sec_points[p]=self.sec_points[pt]
+                return 
+        dis_inverse=[1.0/x for x in dis]
+        dis_sum=sum(dis_inverse)
+        dis_weight=[x/dis_sum for x in dis_inverse]
+        result={}
+        for r in RESULTS.keys():
+            result[r] =sum([dis_weight[i]*self.sec_points[a2T(pts[i],3)][r]  for i in xrange(nnum)])
+        self.sec_points[p]=NodeResult(result)

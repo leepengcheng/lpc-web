@@ -78,7 +78,6 @@ class Model(object):
         '''
         #如果边界单元数目为0 则表示无边界信息
         if not len(self.boundary):
-            print "warning:can not find boundary information in cdb file!!"
             return None
         cells = [self.cells[Key] for Key in self.boundary[flag]]
         boundary_polys = vtk.vtkCellArray()

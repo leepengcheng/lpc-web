@@ -372,9 +372,9 @@ proc getProperty {id key} \
       set xmlProperty [$node text]
       if {[lsort $xmlProperty]==[lsort $ansProperty]} {
           if {$key=="type"} {
-            return [[$node parentNode] getAttribute name]
+            return [msgcat::mc [[$node parentNode] getAttribute id]]
           } elseif {$key=="name"} {
-            return [$node getAttribute name]
+            return [msgcat::mc [$node getAttribute id]]
           }
       }
   }
@@ -395,6 +395,7 @@ proc initialize {} \
 
     set selTreeNode "root"
     set index 0
+
     foreach id [GetAnsysMatNumberList] {\
        set name [getProperty $id name]
        set type [getProperty $id type]

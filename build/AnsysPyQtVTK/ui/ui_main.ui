@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>907</width>
+    <width>957</width>
     <height>601</height>
    </rect>
   </property>
@@ -24,12 +24,12 @@
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>520</x>
       <y>10</y>
-      <width>381</width>
+      <width>431</width>
       <height>561</height>
      </rect>
     </property>
@@ -46,66 +46,121 @@
      <property name="bottomMargin">
       <number>5</number>
      </property>
-     <item row="7" column="1">
-      <widget class="QLineEdit" name="edit_center_x">
+     <item row="13" column="2">
+      <widget class="QComboBox" name="combo_infosys">
+       <item>
+        <property name="text">
+         <string>总体坐标系</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>局部坐标系</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>总体+局部坐标系</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QComboBox" name="combo_patternsection">
+       <item>
+        <property name="text">
+         <string>网格模式</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>线框模式</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>云图模式</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLineEdit" name="edit_end_x">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
-     <item row="13" column="1">
-      <widget class="QPushButton" name="btn_selnode">
-       <property name="text">
-        <string>选择节点</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="2">
-      <widget class="QLabel" name="label_yspace">
-       <property name="text">
-        <string>环向间距</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1" colspan="2">
-      <widget class="QLineEdit" name="edit_xmlfile">
+     <item row="8" column="3">
+      <widget class="QLineEdit" name="edit_start_z">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_xmlfile">
+     <item row="8" column="1">
+      <widget class="QLineEdit" name="edit_start_x">
        <property name="text">
-        <string>结果文件</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_boundarytype">
+     <item row="7" column="3">
+      <widget class="QLineEdit" name="edit_center_z">
        <property name="text">
-        <string>边界显示</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="check_model">
+     <item row="8" column="2">
+      <widget class="QLineEdit" name="edit_start_y">
        <property name="text">
-        <string>显示模型</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="11" column="2">
-      <widget class="QLabel" name="label_angle">
+     <item row="9" column="2">
+      <widget class="QLineEdit" name="edit_end_y">
        <property name="text">
-        <string>角度值</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
-      <widget class="QCheckBox" name="check_polarsys">
+     <item row="6" column="0">
+      <widget class="QPushButton" name="btn_newsec">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="text">
-        <string>显示柱坐标系</string>
+        <string>创建截面</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="3">
+      <widget class="QLineEdit" name="edit_end_z">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QLineEdit" name="edit_p2">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_model">
+       <property name="text">
+        <string>模型显示</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="3">
+      <widget class="QLineEdit" name="edit_yspace">
+       <property name="text">
+        <string>30</string>
        </property>
       </widget>
      </item>
@@ -113,6 +168,13 @@
       <widget class="QCheckBox" name="check_boundary">
        <property name="text">
         <string>显示边界</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QPushButton" name="btn_start">
+       <property name="text">
+        <string>选择起点</string>
        </property>
       </widget>
      </item>
@@ -142,132 +204,10 @@
        </item>
       </widget>
      </item>
-     <item row="8" column="0">
-      <widget class="QPushButton" name="btn_start">
-       <property name="text">
-        <string>选择起点</string>
-       </property>
-      </widget>
-     </item>
-     <item row="15" column="0" colspan="4">
-      <widget class="QPlainTextEdit" name="edit_result">
-       <property name="plainText">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="3">
-      <widget class="QComboBox" name="combo_sys">
-       <item>
-        <property name="text">
-         <string>笛卡尔</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>柱坐标</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="9" column="0">
-      <widget class="QPushButton" name="btn_end">
-       <property name="text">
-        <string>选择终点</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" colspan="2">
-      <widget class="QLineEdit" name="edit_cdbfile">
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="edit_center_x">
        <property name="text">
         <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="btn_xmlfile">
-       <property name="text">
-        <string>选择XML文件</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="btn_cdbfile">
-       <property name="text">
-        <string>选择CDB文件</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="2">
-      <widget class="QLineEdit" name="edit_center_y">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="3">
-      <widget class="QLineEdit" name="edit_center_z">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QLineEdit" name="edit_start_x">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="2">
-      <widget class="QLineEdit" name="edit_start_y">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="3">
-      <widget class="QLineEdit" name="edit_start_z">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="QLineEdit" name="edit_end_x">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="2">
-      <widget class="QLineEdit" name="edit_end_y">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="3">
-      <widget class="QLineEdit" name="edit_end_z">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="2">
-      <widget class="QLineEdit" name="edit_p2">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QPushButton" name="btn_newsec">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>创建截面</string>
        </property>
       </widget>
      </item>
@@ -344,39 +284,6 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="3">
-      <widget class="QLineEdit" name="edit_yspace">
-       <property name="text">
-        <string>30</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QComboBox" name="combo_patternsection">
-       <item>
-        <property name="text">
-         <string>网格模式</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>线框模式</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>云图模式</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_model">
-       <property name="text">
-        <string>模型显示</string>
-       </property>
-      </widget>
-     </item>
      <item row="10" column="0">
       <widget class="QLabel" name="label_xspace">
        <property name="text">
@@ -388,27 +295,6 @@
       <widget class="QPushButton" name="btn_center">
        <property name="text">
         <string>选择圆心</string>
-       </property>
-      </widget>
-     </item>
-     <item row="13" column="3">
-      <widget class="QPushButton" name="btn_saveconf">
-       <property name="text">
-        <string>保存配置</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="0">
-      <widget class="QCheckBox" name="check_polar">
-       <property name="text">
-        <string>数值输出</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
-      <widget class="QLineEdit" name="edit_xspace">
-       <property name="text">
-        <string>10</string>
        </property>
       </widget>
      </item>
@@ -426,27 +312,10 @@
        </item>
       </widget>
      </item>
-     <item row="11" column="3">
-      <widget class="QLineEdit" name="edit_ange"/>
-     </item>
-     <item row="13" column="0">
-      <widget class="QLabel" name="label_nodeinfo">
-       <property name="text">
-        <string>节点信息:</string>
-       </property>
-      </widget>
-     </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_sys">
        <property name="text">
         <string>截面显示</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QCheckBox" name="check_section">
-       <property name="text">
-        <string>显示截面</string>
        </property>
       </widget>
      </item>
@@ -467,6 +336,241 @@
          <string>云图模式</string>
         </property>
        </item>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="check_section">
+       <property name="text">
+        <string>显示截面</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="0">
+      <widget class="QLabel" name="label_nodeinfo">
+       <property name="text">
+        <string>节点信息:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QLineEdit" name="edit_xspace">
+       <property name="text">
+        <string>10</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="2">
+      <widget class="QLabel" name="label_yspace">
+       <property name="text">
+        <string>环向间距</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QLineEdit" name="edit_xmlfile">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_xmlfile">
+       <property name="text">
+        <string>结果文件</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_boundarytype">
+       <property name="text">
+        <string>边界显示</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="check_model">
+       <property name="text">
+        <string>显示模型</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QPushButton" name="btn_end">
+       <property name="text">
+        <string>选择终点</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="2">
+      <widget class="QLineEdit" name="edit_center_y">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="0" colspan="4">
+      <widget class="QPlainTextEdit" name="edit_result">
+       <property name="plainText">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" colspan="2">
+      <widget class="QLineEdit" name="edit_cdbfile">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QComboBox" name="combo_sys">
+       <item>
+        <property name="text">
+         <string>笛卡尔</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>柱坐标</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="btn_cdbfile">
+       <property name="text">
+        <string>选择CDB文件</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="btn_xmlfile">
+       <property name="text">
+        <string>选择XML文件</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="1">
+      <widget class="QPushButton" name="btn_selnode">
+       <property name="text">
+        <string>选择节点</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="3">
+      <widget class="QPushButton" name="btn_saveconf">
+       <property name="text">
+        <string>保存配置</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="3">
+      <widget class="QComboBox" name="combo_infotype">
+       <item>
+        <property name="text">
+         <string>应力</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>位移</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>应力+位移</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sx</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sz</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sxy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Syz</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sxz</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Seqv</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Ux</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Uy</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Uz</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Usum</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="11" column="3">
+      <widget class="QLineEdit" name="edit_ptsize">
+       <property name="text">
+        <string>1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="2">
+      <widget class="QLabel" name="label_ptsize">
+       <property name="text">
+        <string>节点大小</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="2">
+      <widget class="QCheckBox" name="check_localsys">
+       <property name="text">
+        <string>显示局部坐标</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="QCheckBox" name="check_worldsys">
+       <property name="text">
+        <string>显示总体坐标</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QCheckBox" name="check_polar">
+       <property name="text">
+        <string>数值输出</string>
+       </property>
       </widget>
      </item>
     </layout>

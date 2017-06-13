@@ -69,7 +69,7 @@ def getAngleFrom2Vector(vec1,vec2):
     "求两个矢量的夹角角度"
     norm1=np.sqrt(np.sum(np.power(vec1,2)))
     norm2=np.sqrt(np.sum(np.power(vec2,2)))
-    cosa=abs(vec1.dot(vec2)/(norm1*norm2))
+    cosa=vec1.dot(vec2)/(norm1*norm2)
     angle=np.rad2deg(np.arccos(cosa))
     return angle
 
@@ -122,41 +122,47 @@ def setLineEidtText(self, data, sel="center"):
         sel_edits[i].setText(str(data[i]))
     self.ui.statusbar.clearMessage()
 
-def showMessage(self,msg):
+def showMessage(self,msg,duration=2000):
     "显示消息"
-    self.ui.statusbar.showMessage(msg)
+    self.ui.statusbar.showMessage(msg,duration)
 
 
 def isPointInPoly(pt,poly,matrix):
     "判断点是否在多边形内"
     a,b,npts=0,0,len(poly)
-    poly=[getNodeTFXYZ(p,matrix,3) for p in poly] #转换为截面坐标
-    poly=[p-pt for p in poly] #将平面原点移动到pt
+    tfpoly=[getNodeTFXYZ(p,matrix) for p in poly] #转换为截面坐标
+    tfpoly=[p-pt for p in tfpoly] #将平面原点移动到pt
     for i in xrange(npts):
-        p0=poly[i]
-        p1=poly[i+1] if i!=npts-1 else poly[0]
+        p0=tfpoly[i]
+        n=i+1 if i!=npts-1 else 0
+        p1=tfpoly[n]
         #当有交点或者过端点的同时另一端的Y值大于0
         #过2个端点认为没有交点
-        if p0[1]*p1[1]<0  or (p0[1]==0 and p1[1]>0) or (p0[1]>0 and p1[1]==0):
+        if (p0[1]>MIN and p1[1]<=MIN) or (p0[1]<=MIN and p1[1]>MIN):
             x=p0[0]-p0[1]*(p1[0]-p0[0])/(p1[1]-p0[1]) #交点的X坐标
-            #点在线上
-            if x==0:
-                return -1
-            if x>0:
+            #点在线上,返回节点排序
+            if abs(x)<=MIN:
+                return (poly[i],poly[n])
+            elif x>MIN:
                 a+=1
             else:
                 b+=1
-    #两侧都为奇数
-    return a%2 and b%2 
+    #两侧都为奇数,则在多边形内
+    if a%2 and b%2:
+       return poly
+    else:
+       return None
+
     
 def isPointInSection(pt,polys,matrix):
-    "判断点是否在截面上"
+    "判断点是否在截面上,返回None或者所在多边形的节点"
     #将pt转换为局部坐标系坐标
-    pt=getNodeTFXYZ(pt,matrix,3)
+    pt=getNodeTFXYZ(pt,matrix)
     for poly in polys:
-        if isPointInPoly(pt,poly,matrix):
-            return True
-    return False
+        pts=isPointInPoly(pt,poly,matrix)
+        if not pts is None:
+            return pts
+    return None
 
 def createAxisActor(center,start,end,scale=5):
     '''创建坐标系
