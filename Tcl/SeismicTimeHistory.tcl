@@ -444,7 +444,7 @@ proc timeSolve {} \
         Y { catch {ans_sendcommand "ACEL,0,$g*$gravity,0"} err}
         Z { catch {ans_sendcommand "ACEL,0,0,$g*$gravity"} err}
       }
-      catch {ans_sendcommand "ACEL,$g*$gravity,0,0"}
+      # catch {ans_sendcommand "ACEL,$g*$gravity,0,0"}
       catch {ans_sendcommand "TIME,$t"} err
       catch {ans_sendcommand "OUTERS,ALL,ALL"} err
       catch {ans_sendcommand "SOLVE"} err

@@ -1,4 +1,4 @@
-*cfopen,'E:/support.xml'
+*cfopen,'E:/support-case-1.xml'
 *vwrite
 ('<?xml version="1.0" encoding="gb2312"?>')
 *vwrite
@@ -6,7 +6,7 @@
 *vwrite
 ('<Project name="support">')
 *vwrite
-('<Case id="1" name="test" property="dasdasd">')
+('<Case id="1" name="adas" property="asdasd">')
 *get,_count,node,,count
 *set,_num,0
 *do,i,1,_count
@@ -54,7 +54,7 @@ _num=ndnext(_num)
 ('</Case>')
 ESEL,S,TYPE,,   1
 *vwrite
-('<Elements>')
+('<Damages>')
 *GET,_ecount,ELEM,,COUNT
 *SET,_enum,0
 *DO,I,1,_ecount
@@ -73,7 +73,7 @@ _enum=ELNEXT(_enum)
 *ENDIF
 *ENDDO
 *vwrite
-('</Elements>')
+('</Damages>')
 *vwrite
 ('</Project>')
 *vwrite

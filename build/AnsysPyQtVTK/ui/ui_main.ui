@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>957</width>
+    <width>977</width>
     <height>601</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <widget class="QWidget" name="vtkWidget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>10</y>
       <width>511</width>
       <height>561</height>
@@ -27,7 +27,7 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>520</x>
+      <x>530</x>
       <y>10</y>
       <width>431</width>
       <height>561</height>
@@ -56,11 +56,6 @@
        <item>
         <property name="text">
          <string>局部坐标系</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>总体+局部坐标系</string>
         </property>
        </item>
       </widget>
@@ -468,17 +463,12 @@
       <widget class="QComboBox" name="combo_infotype">
        <item>
         <property name="text">
-         <string>应力</string>
+         <string>Stress</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>位移</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>应力+位移</string>
+         <string>Displace</string>
         </property>
        </item>
        <item>

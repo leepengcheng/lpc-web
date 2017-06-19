@@ -1,4 +1,5 @@
 #coding:utf-8
+from collections import OrderedDict
 '''
 配置文件
 '''
@@ -15,7 +16,8 @@ WHITE = (1, 1, 1)
 
 
 #输出结果类型
-RESULTS = {'Ux':0, 'Uy':1, 'Uz':2,'Usum':-1, 'Sx':(0,0), 'Sy':(1,1), 'Sz':(2,2), 'Sxy':(0,1), 'Sxz':(0,2), 'Syz':(1,2), 'Seqv':-1}
+RESULTS = OrderedDict([('Ux',0), ('Uy',1), ('Uz',2),('Usum',-1), ('Sx',(0,0)), ('Sy',(1,1)), 
+('Sz',(2,2)), ('Sxy',(0,1)), ('Sxz',(0,2)), ('Syz',(1,2)), ('Seqv',-1)])
 
 ########单元拓扑关系################
 #单元面拓扑关系

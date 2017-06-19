@@ -94,7 +94,9 @@ class MainWindow(QtWidgets.QMainWindow):
         wxyz = self.sel.getCenter()
         if sender == "Node":
             if self.cmd == CMD.WORLD_XYZ:
-                info=self.section.getNodeData(wxyz)
+                sys=self.ui.combo_infosys.currentText()
+                display=self.ui.combo_infotype.currentText()
+                info=self.section.getNodeData(wxyz,sys,display)
                 self.ui.edit_result.setPlainText(info)
             elif self.cmd == CMD.LOCAL_STRESS:
                 pass
@@ -111,6 +113,8 @@ class MainWindow(QtWidgets.QMainWindow):
         "创建柱坐标数值输出线"
         self.loadImportData("section")
         if isshow:
+            if not "section" in self.actors.keys():
+                self.showSection(True)
             actors=[]
             params=self.getSectionInputData()
             if not params is None:
@@ -169,7 +173,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if isshow:
             actors = []
             actors.append(self.model.createMeshActor(showLine=True))  #显示网格模型
-            actors.append(self.model.createBoundaryActor("10"))  #显示边界
             self.showActors("model", actors, True)
         else:
             self.hideActors("model")
@@ -178,6 +181,8 @@ class MainWindow(QtWidgets.QMainWindow):
         '''创建并显示边界'''
         self.loadImportData("model")
         if isshow:
+            if not "model" in self.actors.keys():
+                self.showModel(True)
             actors = []
             bounadry_actor=self.model.createBoundaryActor("10")
             if bounadry_actor is None:
@@ -263,6 +268,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.edit_xspace.setText(conf.get("section","xspace"))
         self.ui.edit_yspace.setText(conf.get("section","yspace"))
         self.ui.edit_ptsize.setText(conf.get("section","ptsize"))
+        self.ui.combo_infosys.setCurrentIndex(conf.getint("section","infosys"))
+        self.ui.combo_infotype.setCurrentIndex(conf.getint("section","infotype"))
         setLineEidtText(self,conf.get("section","center").split(","),"center")
         setLineEidtText(self,conf.get("section","start").split(","),"start")
         setLineEidtText(self,conf.get("section","end").split(","),"end")
@@ -282,6 +289,8 @@ class MainWindow(QtWidgets.QMainWindow):
         conf.set("section","start","%s,%s,%s"%a2T(getLineEidtData(self,"start")))
         conf.set("section","end","%s,%s,%s"%a2T(getLineEidtData(self,"end")))
         conf.set("section","p123","%s,%s,%s"%a2T(getLineEidtData(self,"p123",int)))
+        conf.set("section","infosys",self.ui.combo_infosys.currentIndex())
+        conf.set("section","infotype",self.ui.combo_infotype.currentIndex())
         conf.write(open(fcf,"w"))
         showMessage(self,u"配置保存完毕")
     

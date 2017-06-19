@@ -246,27 +246,38 @@ class Section(object):
             r3[r] = r1[r] + (r2[r] - r1[r]) * scale
         return NodeResult(r3)
 
-    def getNodeData(self, nloc, display="Seqv"):
+    def getNodeData(self, nloc,sys,display=None):
         if not nloc in self.sec_points.keys():
-            return ""
+            return u"提取节点信息失败"
         n_result= self.sec_points[nloc]
         items=RESULTS.keys()
-        data=u"总体坐标系:\n"
-        data+="XYZ:(%.3f,%.3f,%.3f)\n"%nloc
-        for item in items:
-            if item.startswith("U"):
-                data+="%s:%s\n"%(item,n_result.displace(key=item))
-            elif item.startswith("S"):
-                data+="%s:%s\n"%(item,n_result.stress(key=item))
-        data+="*"*20+"\n"
-        data+=u"局部坐标系:\n"
-        mat=self.matrix[:3,:3]
-        data+="XYZ:(%.3f,%.3f,%.3f)\n"%a2T(getNodeTFXYZ(nloc,self.matrix))
-        for item in items:
-            if item.startswith("U"):
-                data+="%s:%s\n"%(item,n_result.displace(mat,key=item))
-            elif item.startswith("S"):
-                data+="%s:%s\n"%(item,n_result.stress(mat,key=item))
+        data=""
+        if not display is None:      
+            if display=="Displace":
+                items=[item for item in items if item.startswith("U") ]
+            elif display=="Stress":
+                items=[item for item in items if item.startswith("S") ]
+            else:
+                items=[display]
+        if sys==u"总体坐标系":
+            data+="XYZ:(%.3f,%.3f,%.3f)\n"%nloc
+            for item in items:
+                if item.startswith("U"):
+                    data+="%s:%s\n"%(item,n_result.displace(key=item))
+                elif item.startswith("S"):
+                    data+="%s:%s\n"%(item,n_result.stress(key=item))
+        else:
+            mat=self.matrix[:3,:3]
+            data+="XYZ:(%.3f,%.3f,%.3f)\n"%a2T(getNodeTFXYZ(nloc,self.matrix))
+            for item in items:
+                if item.startswith("U"):
+                    data+="%s:%s\n"%(item,n_result.displace(mat,key=item))
+                elif item.startswith("S"):
+                    data+="%s:%s\n"%(item,n_result.stress(mat,key=item))
+            trans_stress=n_result.stress(mat)[:2,:2]
+            trans_eigenval=np.linalg.eigvals(trans_stress)
+            trans_eigenval.sort()
+            data+=u"S1:%s\nS2:%s\n"%(trans_eigenval[1],trans_eigenval[0])
         return data
         
 

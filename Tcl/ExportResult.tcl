@@ -627,7 +627,7 @@ proc exportXml {} \
 		
 		#begin write data to apdl
 		puts $fl {*vwrite}
-		puts $fl {('<Elements>')}
+		puts $fl {('<Damages>')}
 
 		puts $fl  {*GET,_ecount,ELEM,,COUNT}
 		puts $fl  {*SET,_enum,0}
@@ -644,7 +644,7 @@ proc exportXml {} \
 		puts $fl {*ENDIF}
 		puts $fl {*ENDDO}
 		puts $fl {*vwrite}
-		puts $fl {('</Elements>')}
+		puts $fl {('</Damages>')}
 	} 
 	#######Solid Element Data end #######
 

@@ -707,11 +707,8 @@ proc applyUnderLoad {} \
 			set max_height [getNodeValue $max_loc]
 			
 			########calculate the pressure
-			set min_pressure [expr 0.5*$rw*$min_height*$min_height*$factor]
-			set max_pressure [expr 0.5*$rw*$max_height*$max_height*$factor]
-			##test expression
-			# set min_pressure [expr 10*$min_height]
-			# set max_pressure [expr 10*$max_height]
+			set min_pressure [expr $rw*$min_height*$factor]
+			set max_pressure [expr $rw*$max_height*$factor]
 
 			set stepsize [expr ($max_pressure-$min_pressure)/$element_dis]
 
@@ -719,10 +716,6 @@ proc applyUnderLoad {} \
 			catch {ans_sendcommand "SFGRAD,PRES,0,$water_ori,$min_loc,$stepsize"} err 
 			catch {ans_sendcommand "SF,ALL,PRES,$min_pressure"} err 
 	}
-
-
-
-	
 }
 
 #sideface applyLoad
@@ -769,21 +762,7 @@ proc applySideLoad {} \
 			set average [expr $sum*1.0/[llength $elements($name)]]
 
 			set absheight  [getNodeValue $average]
-			#########Method 1###############
-			
-			# set locs_v [lsort -real $locs_v]
-			# #Element min and max vertical location  
-			# set min_loc_v [lindex $locs_v 0]
-			# set max_loc_v [lindex $locs_v end]
-			# #get the element absheight
-			# set element_h [expr $max_loc_v-$min_loc_v]
-
-
-			# set pressure [expr 0.5*$rw*$absheight*$absheight*$factor]
-			# catch {ans_sendcommand "SFGRAD,PRES,0,$gravity_ori,$min_loc_v,0"} err
-			# catch {ans_sendcommand "SF,ALL,PRES,$pressure"} err
-
-			#########Method 2###############
+			#sort the vertial
 			set locs_v [lsort -real $locs_v]
 			#Element min and max location 
 			set min_loc_v [lindex $locs_v 0]
@@ -795,10 +774,10 @@ proc applySideLoad {} \
 			#if the node vertical location grater than abs height,continue
 			if {$min_height<0} {continue}
 			##calculate the pressure
-			set min_pressure [expr 0.5*$rw*$min_height*$min_height]
-			set max_pressure [expr 0.5*$rw*$max_height*$max_height]
+			set min_pressure [expr $rw*$min_height*$factor]
+			set max_pressure [expr $rw*$max_height*$factor]
 
-			set stepsize [expr ($max_pressure-$min_pressure)*1.0/$element_dis]
+			set stepsize [expr ($max_pressure-$min_pressure)/$element_dis]
 
 			catch {ans_sendcommand "SFGRAD,PRES,0,$direction,$min_loc_v,$stepsize"} err
 			catch {ans_sendcommand "SF,ALL,PRES,$min_pressure"} err

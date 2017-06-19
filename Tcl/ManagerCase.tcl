@@ -76,7 +76,7 @@ proc main {} {
           -tooltip [msgcat::mc "Delete Loadcase "] ]
 
       set btn_write [euidl::button $parent.btn_write \
-          -command [list [code handleLoadCase] "WRITE"]\
+          -command [namespace code writeLoadCase]\
           -imagefile $png(write) \
           -tooltip [msgcat::mc "Write loadcase"] ]
 
@@ -394,29 +394,6 @@ proc update_LoadCaseList { } \
     variable tabledata
     variable lclistbox
  
-    if {$operator=="WRITE"} {
-      if {[$lclistbox size]==0} {
-      tk_messageBox -title [msgcat::mc "Tips "] \
-        -parent $parent\
-        -message [msgcat::mc "No LoadCase Was Read! "] \
-        -icon warning 
-        return
-      }
-      set lcfile [tk_getSaveFile  -filetypes {{loadcase .l*}}]
-      set dirname [file dirname $lcfile]
-      set filename [file tail $lcfile]
-
-      set command "LCWRITE,11,'$filename','','$dirname'"
-      # LCWRITE,12,'asdasdasd',' ','D:\Robomongo\'
-      puts $command
-      catch {ans_sendcommand $command} err
-      tk_messageBox -title [msgcat::mc "Tips "] \
-        -parent $parent\
-        -message [msgcat::mc "Export Is Done! "] \
-        -icon info
-      return
-    }
-
     set selection [lsort -integer  [$table curselection]]    
     # If there is no selection then return
     if { [string match {} $selection] } {
@@ -486,6 +463,81 @@ proc update_LoadCaseList { } \
         }
     } 
 }
+
+
+proc writeLoadCase {} {
+      variable font
+      variable png
+      variable writefile
+      variable outid
+    
+      if {[winfo exists .lcwrite]} {
+              destroy .lcwrite]
+      }
+      set subtitle [msgcat::mc "Write loadcase"]
+      set thestate normal
+      #create the top level
+      set lcwrite [toplevel .lcwrite]
+      #set title for the window 
+      wm title $lcwrite $subtitle
+      #adjust the location of subwindow window
+      set x [expr {([winfo screenwidth .]-320)/2}]
+      set y [expr {([winfo screenheight .]-160)/2}]
+      wm geometry $lcwrite  320x160+$x+$y
+
+
+      set label_outid [label $lcwrite.label_outid \
+        -text "[msgcat::mc "Case ID "]:        "\
+        -font $font(content) \
+        -width 10]
+      set entry_outid [euidl::entry $lcwrite.entry_outid\
+        -variable [scope outid] \
+        -validate focusout\
+        -width 16 \
+        -font $font(content)\
+        -validatedata ansinteger]
+      
+      set labelfile [label $lcwrite.labelfile \
+        -text "[msgcat::mc "Please Select The LoadCase File "]:"\
+        -state disabled\
+        -font $font(content)]
+
+      set framefile [label $lcwrite.framefile]
+      set entryfile [entry $lcwrite.entryfile\
+        -textvariable [scope writefile] \
+        -font $font(content)]
+
+      set btnfile [euidl::button $lcwrite.btnfile\
+        -tooltip [msgcat::mc "Please Select The LoadCase File "] \
+        -imagefile $png(import) \
+        -command [list [code selectfile] "EXPORT"]\
+        -font $font(content) ]
+
+      set frameokcancel [label $lcwrite.frameokcancel]
+      set btnok [button $lcwrite.btnok \
+        -text [msgcat::mc "Ok "]\
+        -font $font(content) \
+        -width 8\
+        -command [code ok_write_lc_click]]
+      set btnexit [button $lcwrite.btnexit\
+        -text [msgcat::mc "Exit "]\
+        -font $font(content) \
+        -width 8\
+        -command { destroy .lcwrite }]
+
+      ###########create and arrange the control#################
+      grid $label_outid -row 1  -column 0  -sticky w 
+      grid $entry_outid -row 1  -column 1  -sticky w -pady 2m
+
+      grid $labelfile -row 2  -column 0  -columnspan 2  -sticky w
+
+      grid $entryfile -row 3  -column 0   -columnspan 2 -sticky w
+      grid $btnfile   -row 3  -column 1    -sticky e
+
+      pack $btnok $btnexit -in $frameokcancel -side left -padx 5m 
+      grid $frameokcancel  -row 4 -column 0  -columnspan 2 -pady 2m
+}
+
 #show the local material information
   proc showLoadCase {} \
 {
@@ -846,6 +898,46 @@ proc cmplistMove {direction} \
   }
 
 
+
+proc ok_write_lc_click {}\
+{
+      variable lclistbox
+      variable outid
+      variable writefile
+      variable parent
+
+      set err {}
+      if {[$lclistbox size]==0} {
+        set err "No LoadCase Was Read! "
+      }
+      if {$outid=="" || $outid>99 ||$outid<1 } {
+        set err "the Scope Of CaseID is 0-99!"
+      }  
+      if {$writefile==""} {
+        set err "Please Select The LoadCase File "
+      }
+      
+      if {![string match {} $err]} {
+        tk_messageBox -title [msgcat::mc "Tips "] \
+          -parent .lcwrite\
+          -message [msgcat::mc $err] \
+          -icon warning
+          return
+      }
+
+      set dirname [file dirname $writefile]
+      set filename_postfix [split [file tail $writefile] .]
+      set filename_nopostfix [lindex $filename_postfix 0]
+
+      set command "LCWRITE,$outid,'$filename_nopostfix','','$dirname'"
+      catch {ans_sendcommand $command} err
+      destroy .lcwrite
+      tk_messageBox -title [msgcat::mc "Tips "] \
+        -parent $parent\
+        -message [msgcat::mc "Export Is Done! "] \
+        -icon info
+}
+
 proc ok_case_info_click {} \
 {
   variable table
@@ -1045,7 +1137,7 @@ proc createLoadCase {} \
           -state disabled\
           -tooltip [msgcat::mc "Please Select The LoadCase File "] \
           -imagefile $png(import) \
-          -command [code selectfile]\
+          -command [list [code selectfile] "IMPORT"]\
           -font $font(content) ]
 
         set labelProperty [label $newlcform.labelpro \
@@ -1238,10 +1330,19 @@ proc ok_new_lc_click {} \
 
 
 }
-proc selectfile {} \
+proc selectfile {event} \
 {
   variable casefile
-  set casefile [tk_getOpenFile  -filetypes {{Loadcase .l*}}]
+  variable writefile
+
+  switch $event {
+    "IMPORT" {
+      set casefile [tk_getOpenFile  -filetypes {{Loadcase .l*}}]
+    }
+    "EXPORT" {
+      set writefile   [tk_getSaveFile  -filetypes {{loadcase .l*}}]
+    }
+  }
 
 }
 
