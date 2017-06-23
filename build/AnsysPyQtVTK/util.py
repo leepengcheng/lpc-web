@@ -67,8 +67,8 @@ def getRotMatrixFromZAxis(angle,size=4):
     
 def getAngleFrom2Vector(vec1,vec2):
     "求两个矢量的夹角角度"
-    norm1=np.sqrt(np.sum(np.power(vec1,2)))
-    norm2=np.sqrt(np.sum(np.power(vec2,2)))
+    norm1=np.linalg.norm(vec1)
+    norm2=np.linalg.norm(vec2)
     cosa=vec1.dot(vec2)/(norm1*norm2)
     angle=np.rad2deg(np.arccos(cosa))
     return angle

@@ -140,7 +140,7 @@ class Selection():
 
     def getCenter(self):
         "获得当前选中项的中心"
-        return self.current.GetMapper().GetInputAlgorithm().GetCenter() 
+        return self.current.GetMapper().GetInputAlgorithm().GetCenter()
 
 
     def hightLight(self,color=RED):
@@ -155,11 +155,8 @@ class Selection():
 
 class CMD(object):
     "指令类"
-    WORLD_XYZ=u"显示节点的全局坐标系的坐标" #显示世界坐标
-    LOCAL_XYZ=2 #显示局部坐标
-    WORLD_STRESS=3 #显示总体应力
-    LOCAL_STRESS=4 #显示局部应力
-    HIDE_THENODE=5 #隐藏当前节点
+    SHOW_NODEINFO=u"显示选中节点信息"
+    HIDE_NODE=u"隐藏选中节点" 
     GET_CENTER=u"请选择柱坐标系圆弧 <圆心>"
     GET_START=u"请选择柱坐标圆弧 <起点>"
     GET_END=u"请选择柱坐标圆弧  <终点>"

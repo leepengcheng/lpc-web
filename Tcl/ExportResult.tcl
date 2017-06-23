@@ -35,22 +35,35 @@ proc main {} \
 	}
 	set parent [toplevel .exportwindow]
 	set font_cn  {"Microsoft YaHei" 12 normal}
+	set font_bold {"Microsoft YaHei" 12 bold}
 
 	wm title $parent [msgcat::mc "Export Result "]
 	#adjust the location of localmat
 	set x [expr {([winfo screenwidth  .]-550)/2}]
-	set y [expr {([winfo screenheight .]-650)/2}]
-	wm geometry .exportwindow 550x650+$x+$y
+	set y [expr {([winfo screenheight .]-700)/2}]
+	wm geometry .exportwindow 550x700+$x+$y
 
 	#########Import Cdb File ###############
 	set projectCtrls(label_name) [label $parent.label_projectname \
 		-text "[msgcat::mc "Project Name "]:" \
-		-font $font_cn]
+		-font $font_bold]
 
 	set projectCtrls(entry_name) [entry $parent.entry_projectname \
 		-textvariable [scope projectname] \
-		-width 15\
+		-width 14\
 		-font $font_cn]
+
+	set label_projectunits [label $parent.label_projectunits \
+		-text "[msgcat::mc "Model Units "]:" \
+		-font $font_bold]
+
+	set combo_projectunits [euidl::combobox $parent.combo_projectunits \
+		-exportselection 1 \
+		-style dropdown \
+		-listheight 100 \
+		-width 13\
+		-font $font_cn \
+		-variable [scope projectunits]]
 
 	set projectCtrls(label_property) [label $parent.label_projectProperty \
 		-text "[msgcat::mc "Project Property "]:" \
@@ -58,12 +71,12 @@ proc main {} \
 
 	set projectCtrls(entry_property) [entry $parent.entry_projectProperty \
 		-textvariable [scope projectproperty] \
-		-width 15\
+		-width 48\
 		-font $font_cn]
 
 	set cdbfileCtrls(label_tips) [label $parent.label_cdbtips \
 		-text "[msgcat::mc "Please Select Cdb File "]:" \
-		-font $font_cn]
+		-font $font_bold]
 
 	set cdbfileCtrls(entry_file) [entry $parent.entry_cdbfile  \
 		-font $font_cn  \
@@ -97,12 +110,16 @@ proc main {} \
 
 	grid $projectCtrls(label_name)  -row 1 -column 0 -sticky w -pady 2m
 	grid $projectCtrls(entry_name)  -row 1 -column 0 -sticky e -pady 2m
-	grid $projectCtrls(label_property)  -row 1 -column 2 -sticky w -pady 2m
-	grid $projectCtrls(entry_property)  -row 1 -column 2 -sticky e -pady 2m
 
-	grid $cdbfileCtrls(label_tips) -row 2 -column 0 -columnspan 2 -sticky nw -pady 2m
-	grid $cdbfileCtrls(btn_file) -row 2 -column 2 -pady 2m 
-	grid $cdbfileCtrls(entry_file) -row 3 -column 0 -columnspan 3 -sticky nsew 
+	grid $label_projectunits   -row 1 -column 2 -sticky w -pady 2m
+	grid $combo_projectunits  -row 1 -column 2 -sticky e -pady 2m
+
+	grid $projectCtrls(label_property)  -row 2  -column 0 -sticky w -pady 2m
+	grid $projectCtrls(entry_property)  -row 2 -column 0 -columnspan 3 -sticky e -pady 2m
+
+	grid $cdbfileCtrls(label_tips) -row 3 -column 0 -columnspan 2 -sticky nw -pady 2m
+	grid $cdbfileCtrls(btn_file) -row 3 -column 2 -pady 2m 
+	grid $cdbfileCtrls(entry_file) -row 4 -column 0 -columnspan 3 -sticky nsew 
 	
 
 	#######################################################################
@@ -147,7 +164,7 @@ proc main {} \
 	#
 	set xmlfileCtrls(label_caseid) [label $parent.label_caseid \
 		-text "[msgcat::mc "Case ID "]:" \
-		-font $font_cn]
+		-font $font_bold]
 
   	set xmlfileCtrls(combo_caseid) [euidl::combobox $parent.combo_caseid \
          -exportselection 1 \
@@ -158,25 +175,13 @@ proc main {} \
          -font $font_cn \
          -variable [scope caseid]]
 
-	set label_projectunits [label $parent.label_projectunits \
-		-text "[msgcat::mc "Model Units "]:" \
-		-font $font_cn]
-
-  	set combo_projectunits [euidl::combobox $parent.combo_projectunits \
-         -exportselection 1 \
-         -style dropdown \
-         -listheight 100 \
-         -width 13\
-         -font $font_cn \
-         -variable [scope projectunits]]
-
 	set xmlfileCtrls(label_casename) [label $parent.label_casename \
 		-text "[msgcat::mc "Case Name "]:" \
-		-font $font_cn]
+		-font $font_bold]
 
 	set xmlfileCtrls(entry_casename) [entry $parent.entry_casename \
 		-textvariable [scope casename] \
-		-width 15\
+		-width 14\
 		-font $font_cn]
 
 	set frame_CaseProperty [frame $parent.frame_caseproperty]
@@ -186,7 +191,7 @@ proc main {} \
 
 	set xmlfileCtrls(entry_caseproperty) [entry $parent.entry_caseproperty \
 		-textvariable [scope caseproperty] \
-		-width 15\
+		-width 48\
 		-font $font_cn]
 
 	set xmlfileCtrls(btnadd) [button $parent.btn_add \
@@ -203,7 +208,7 @@ proc main {} \
 
 	set xmlfileCtrls(label_xmltips) [label $parent.label_xmltips \
 		-text "[msgcat::mc "Please Select LoadCase File "]:" \
-		-font $font_cn]
+		-font $font_bold]
 
 	set xmlfileCtrls(entry_xmlfile) [entry $parent.entry_xmlfile  \
 		-font $font_cn  \
@@ -234,42 +239,41 @@ proc main {} \
 	#Start arrange these controls
 	#Arrange the label tips
 
-	grid $label_projectunits  -row 4 -column 0 -sticky w -pady 2m
-	grid $combo_projectunits  -row 4 -column 0 -sticky e -pady 2m
-
-	grid $xmlfileCtrls(label_caseid)  -row 4 -column 2 -sticky w -pady 2m
-	grid $xmlfileCtrls(combo_caseid)  -row 4 -column 2 -sticky e -pady 2m
-
+	# grid $label_projectunits  -row 5 -column 0 -sticky w -pady 2m
+	# grid $combo_projectunits  -row 5 -column 0 -sticky e -pady 2m
 
 	grid $xmlfileCtrls(label_casename)  -row 5 -column 0 -sticky w -pady 2m
 	grid $xmlfileCtrls(entry_casename)  -row 5 -column 0 -sticky e -pady 2m
 
-	grid $xmlfileCtrls(label_caseproperty)  -row 5 -column 2 -sticky w -pady 2m
-	grid $xmlfileCtrls(entry_caseproperty)   -row 5 -column 2 -sticky e -pady 2m
+	grid $xmlfileCtrls(label_caseid)  -row 5 -column 2 -sticky w -pady 2m
+	grid $xmlfileCtrls(combo_caseid)  -row 5 -column 2 -sticky e -pady 2m
+
+	grid $xmlfileCtrls(label_caseproperty)  -row 6 -column 0 -sticky w -pady 2m
+	grid $xmlfileCtrls(entry_caseproperty)   -row 6 -column 0 -columnspan 3 -sticky e -pady 2m
 
 
 	pack  $xmlfileCtrls(listbox_Optional) $scrollBar_Optional \
 	-in $xmlfileCtrls(frame_Optional) -side left -fill both -padx 2m -pady 4m 
-	grid $xmlfileCtrls(frame_Optional) -row 6 -column 0 -sticky nsew
+	grid $xmlfileCtrls(frame_Optional) -row 7 -column 0 -sticky nsew
 
 	#Arrange the frame_AddDel 
 	pack $xmlfileCtrls(btnadd) $xmlfileCtrls(btndel)  -in $frame_AddDel -side top -pady 5m
-	grid $frame_AddDel    -row 6 -column 1  -padx 1m
+	grid $frame_AddDel    -row 7 -column 1  -padx 1m
 
 	#Arrange the frame_Selected
 	pack $xmlfileCtrls(listbox_Selected)  $scrollBar_Selected \
 	-in $xmlfileCtrls(frame_Selected) -fill y -side left -padx 2m -pady 4m 
-	grid $xmlfileCtrls(frame_Selected) -row 6 -column 2 -sticky nsew 
+	grid $xmlfileCtrls(frame_Selected) -row 7 -column 2 -sticky nsew 
 
 	# pack $label_xmltips  -side top -anchor center -fill x 
-	grid $xmlfileCtrls(label_xmltips)  -row 7 -column 0 -columnspan 2 -sticky nw -pady 2m
-	grid $xmlfileCtrls(btn_xmlfile) -row 7 -column 2 -pady 2m 
+	grid $xmlfileCtrls(label_xmltips)  -row 8 -column 0 -columnspan 2 -sticky nw -pady 2m
+	grid $xmlfileCtrls(btn_xmlfile) -row 8 -column 2 -pady 2m 
 
-	grid $xmlfileCtrls(entry_xmlfile) -row 8 -column 0 -columnspan 3 -sticky nsew 
+	grid $xmlfileCtrls(entry_xmlfile) -row 9 -column 0 -columnspan 3 -sticky nsew 
 
 	#packthe Ok and cacel button into frame
 	pack $btnok  $btncancel -in $frame_OkCancel -padx 25m  -side left -fill x
-	grid $frame_OkCancel  -row 9 -column 0 -columnspan 3 -sticky nsew  -pady 4m
+	grid $frame_OkCancel  -row 10 -column 0 -columnspan 3 -sticky nsew  -pady 4m
 
 	#initialize the window
 	::euidl::IO::ExportResult::initialize
@@ -717,6 +721,7 @@ proc initialize {} \
 	foreach result $list1 {
 		set args [parseLabel $result]
 		if {[catch {set _tmp_ [ans_getvalue "node,$firstnode,$args"]} err]} {
+				puts $err
 			} else {
 				lappend optionallist $result
 			}
@@ -724,7 +729,7 @@ proc initialize {} \
 	foreach result $list2 {
 		set args [parseLabel $result]
 		if {[catch {set _tmp_ [ans_getvalue "node,$firstnode,$args"]} err]} {
-			puts $ckerr
+			puts $err
 		} else {
 			lappend  selectedlist $result
 		}

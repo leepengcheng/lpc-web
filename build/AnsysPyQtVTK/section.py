@@ -26,7 +26,7 @@ class Section(object):
         '''
         #输入p1 p2 p3如果是节点号,则转换为节点坐标值
         p1, p2, p3 = getNodesNDXYZ(self,p1,p2,p3)
-        self.matrix = getTMatrix(p1, p2, p3)
+        self.section_matrix = getTMatrix(p1, p2, p3)
         #获得截面的点坐标 截面单元拓扑关系 结果值
         self.sec_points, self.sec_polys = self.getModelSectionData()
         points = vtk.vtkPoints()  #插入的节点
@@ -143,7 +143,7 @@ class Section(object):
         求单元与截面交点的排序列表
         '''
         #转换为截面上的坐标
-        sec_lpts = [getNodeTFXYZ(pt,self.matrix) for pt in sec_wpts]
+        sec_lpts = [getNodeTFXYZ(pt,self.section_matrix) for pt in sec_wpts]
         pts_enu = list(enumerate(sec_lpts))  #加上标签
         pts_enu.sort(key=lambda x: x[1][1])  #对节点按照Y进行排序
         p0 = pts_enu[0]  #最下边的节点p0
@@ -167,7 +167,7 @@ class Section(object):
         nclip_locs = {}
         for node in element.nodes:
             nloc = self.nodeset[node].nloc  #节点全局坐标系下的坐标值
-            nclip_loc = getNodeTFXYZ(nloc,self.matrix)
+            nclip_loc = getNodeTFXYZ(nloc,self.section_matrix)
             nclip_locs[node] = nclip_loc  #添加项 节点号:转换值
         nodes_z = [x[2] for x in nclip_locs.values()]  #转换后的Z值列表
         if max(nodes_z) * min(nodes_z) > 0:
@@ -182,7 +182,7 @@ class Section(object):
                     continue
                 else:  #小于等于0有交点
                     #如果线段刚好在切面上
-                    if p1[2] == p2[2]:
+                    if abs(p1[2] - p2[2])<MIN2:
                         eclip_wpts[(n1, n1)] = 0.5
                         eclip_wpts[(n2, n2)] = 0.5
                     else:
@@ -195,6 +195,9 @@ class Section(object):
                             scale = 0.5
                         eclip_wpts[flag] = scale  #存入eclip_wpts字典
             return eclip_wpts
+
+
+
 
     def getModelSectionData(self):
         '''
@@ -259,34 +262,36 @@ class Section(object):
                 items=[item for item in items if item.startswith("S") ]
             else:
                 items=[display]
-        if sys==u"总体坐标系":
-            data+="XYZ:(%.3f,%.3f,%.3f)\n"%nloc
-            for item in items:
-                if item.startswith("U"):
-                    data+="%s:%s\n"%(item,n_result.displace(key=item))
-                elif item.startswith("S"):
-                    data+="%s:%s\n"%(item,n_result.stress(key=item))
+        if sys==u"截面坐标系":
+            matrix=self.section_matrix
+        elif sys==u"截面柱坐标系":
+            #柱坐标的X矢量
+            center=self.cylinder_params[0]
+            vec_x=np.array(self.cylinder_params[1]-center)
+            #点到柱坐标的矢量
+            vec_x1=np.array(np.array(nloc)-center)
+            #如果和柱坐标圆心重合
+            if not all(vec_x1):
+                matrix=self.cylinder_matrix
+            else:
+                ang=getAngleFrom2Vector(vec_x1,vec_x)
+                matrix=getRotMatrixFromZAxis(ang).dot(self.cylinder_matrix)
         else:
-            mat=self.matrix[:3,:3]
-            data+="XYZ:(%.3f,%.3f,%.3f)\n"%a2T(getNodeTFXYZ(nloc,self.matrix))
-            for item in items:
-                if item.startswith("U"):
-                    data+="%s:%s\n"%(item,n_result.displace(mat,key=item))
-                elif item.startswith("S"):
-                    data+="%s:%s\n"%(item,n_result.stress(mat,key=item))
-            trans_stress=n_result.stress(mat)[:2,:2]
-            trans_eigenval=np.linalg.eigvals(trans_stress)
-            trans_eigenval.sort()
-            data+=u"S1:%s\nS2:%s\n"%(trans_eigenval[1],trans_eigenval[0])
+            matrix=np.identity(4)
+        rot_mat=matrix[:3,:3]
+        data+=sys+":\n"
+        data+=u"XYZ坐标:(%.3f,%.3f,%.3f)\n"%a2T(getNodeTFXYZ(nloc,matrix))
+        for item in items:
+            if item.startswith("U"):
+                data+="%s:%s\n"%(item,n_result.displace(rot_mat,key=item))
+            elif item.startswith("S"):
+                data+="%s:%s\n"%(item,n_result.stress(rot_mat,key=item))
+        trans_stress=n_result.stress(rot_mat)[:2,:2]
+        trans_eigenval=np.linalg.eigvals(trans_stress)
+        trans_eigenval.sort()
+        data+=u"S1:%s\nS2:%s\n"%(trans_eigenval[1],trans_eigenval[0])
         return data
         
-
-    def updateLocalMatrix(self, center, node):
-        vec_z = self.matrix[:, :3]
-        matrix = getCylindricalMatrix(vecz, center, node)
-        print u"笛卡尔坐标系应力结果值:", n_result.stress(matrix).round(5)
-        print u"笛卡尔坐标系位移结果值:", n_result.displace(matrix).round(5)
-        print "*" * 50
 
     def getSectionOuterLines(self):
         "获得外轮廓线"
@@ -306,6 +311,7 @@ class Section(object):
         for line, n in couter.items():
             if n == 1:
                 self.secOuterlines.append(line)
+        pass
 
     def getPolarPoints(self, center, matrix):
         "获得射线和网格的边界交点并排序"
@@ -318,7 +324,7 @@ class Section(object):
             if p1[1] * p2[1] > 0:  #局部坐标系的Y值
                 continue
             else:
-                if p1[1] == p2[1]:
+                if abs(p1[1]-p2[1])<MIN:
                     polar_pts[(line[0], line[0])] = (p1[0], 0.5)
                     polar_pts[(line[1], line[1])] = (p2[0], 0.5)
                 else:
@@ -350,7 +356,7 @@ class Section(object):
         eclip_wpts = {}
         nclip_locs = {}
         for nloc in poly:
-            nclip_loc = getNodeTFXYZ(nloc,self.matrix)
+            nclip_loc = getNodeTFXYZ(nloc,self.section_matrix)
             nclip_locs[node] = nclip_loc  #添加项 节点号:转换值
         nodes_y = [x[2] for x in nclip_locs.values()]  #转换后的Z值列表
         if max(nodes_z) * min(nodes_z) > 0:
@@ -382,12 +388,13 @@ class Section(object):
     def createPolarLineActor(self, center, start, end, xspace=30, yspace=30,r=5):
         "创建柱坐标扫描线"
         polar_actors = []
-        polar_matrix = getTMatrix(center, start, end)  #获得柱坐标系的局部矩阵
+        self.cylinder_params=(center, start, end)              #用于传递变量
+        self.cylinder_matrix = getTMatrix(center, start, end)  #获得柱坐标系的局部矩阵
         self.angle = getAngleFrom2Vector(start - center, end - center) #获得夹角
-        isInSec=isPointInSection(center,self.sec_polys,polar_matrix) #圆心是否在单元内
+        isInSec=isPointInSection(center,self.sec_polys,self.cylinder_matrix) #圆心是否在单元内
         for ang in np.append(np.arange(0, self.angle, yspace), self.angle):
             #绕Z旋转ysapce
-            ang_matrix = getRotMatrixFromZAxis(ang).dot(polar_matrix)
+            ang_matrix = getRotMatrixFromZAxis(ang).dot(self.cylinder_matrix)
             #获得扫描线和截面的排序交点的字典
             pts_dict = self.getPolarPoints(center, ang_matrix)            
             pts_list=[] #交点列表

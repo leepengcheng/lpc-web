@@ -501,11 +501,11 @@ proc apply_load {} \
 		set cmd_sfcum "SFCUM,PRES,ADD,1,1," 
 	}
 	##main apdl
-	ans_sendcommand $cmd_sfcum
-	ans_sendcommand "SFGRAD,PRES,0,$direction,$max_val,$stepsize"
-	ans_sendcommand "SF,ALL,PRES,0"
-	ans_sendcommand "/PSF,PRES,NORM,2,0,1"
-	ans_sendcommand "/REP,FAST"
+	catch {ans_sendcommand $cmd_sfcum} err
+	catch {ans_sendcommand "SFGRAD,PRES,0,$direction,$max_val,$stepsize"} err
+	catch {ans_sendcommand "SF,ALL,PRES,0"} err
+	catch {ans_sendcommand "/PSF,PRES,NORM,2,0,1"} err
+	catch {ans_sendcommand "/REP,FAST"} err
 
 	#logging
 	puts "######## Wave Force APDL Start ############"

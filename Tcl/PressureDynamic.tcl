@@ -275,7 +275,7 @@ proc initialize {} \
 	set underface {}
 	set sideface {}
 	set factor 1.0
-	set rw 10000
+	set rw 10
 
 	#check the gravity of ansys db
 	set acelX [ans_getvalue common,,acelcm,,real,22]

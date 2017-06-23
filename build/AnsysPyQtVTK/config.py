@@ -5,6 +5,7 @@ from collections import OrderedDict
 '''
 #默认容差
 MIN = 0.001
+MIN2=0.000001
 MAX = 0.999
 #颜色
 RED = (1, 0, 0)

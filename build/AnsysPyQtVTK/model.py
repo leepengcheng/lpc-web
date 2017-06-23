@@ -68,7 +68,7 @@ class Model(object):
             scalars.InsertTuple1(nid, value[display])
         return scalars
 
-    def createBoundaryActor(self, flag, color=(0, 0, 1)):
+    def createBoundaryActor(self, flagid,showLine,color):
         '''显示边界
         @flag:边界类型标识符
         #4-pressure-inlet, inlet-vent, intake-fan
@@ -79,12 +79,12 @@ class Model(object):
         #如果边界单元数目为0 则表示无边界信息
         if not len(self.boundary):
             return None
-        cells = [self.cells[Key] for Key in self.boundary[flag]]
+        cells = [self.cells[Key] for Key in self.boundary[flagid]]
         boundary_polys = vtk.vtkCellArray()
         for cell in cells:
             boundary_polys.InsertNextCell(cell.nnodes, cell.nodes)
         boundaryData = vtk.vtkPolyData()
-        boundaryData.SetPoints(self.vtkpts)
+        boundaryData.SetPoints(self.getNodes())
         boundaryData.SetPolys(boundary_polys)
         boundaryMapper = vtk.vtkPolyDataMapper()
         boundaryMapper.SetInputData(boundaryData)
@@ -92,6 +92,8 @@ class Model(object):
         boundaryActor = vtk.vtkActor()
         boundaryActor.SetMapper(boundaryMapper)
         boundaryActor.GetProperty().SetColor(color)
+        if showLine:
+            boundaryActor.GetProperty().SetRepresentationToWireframe()
         return boundaryActor
 
     # @costTime
@@ -120,11 +122,7 @@ class Model(object):
         return outerlines
 
     # @costTime
-    def createMeshActor(self,
-                 display="Seqv",
-                 bindNum=10,
-                 showRegion="all",
-                 showLine=False):
+    def createMeshActor(self,display,showLine,bindNum=10,showRegion="all"):
         """
         绘制显示模型
         @showLine:显示线模型
@@ -132,6 +130,7 @@ class Model(object):
         @showRegion:显示区域 全部/外表面/外轮廓
         @bindNum:等值带数目
         """
+        actors=[]
         ##显示区域 全部/外表面/外轮廓
         # if "outerfaces" in showRegion:
         #     self.cells = self.getOuterCells(self.cells)
@@ -147,42 +146,45 @@ class Model(object):
             meshData.SetPolys(polys)
         meshMapper = vtk.vtkPolyDataMapper()
         #显示结果云图
-        # if display in RESULTS.keys():
-        #     scalars=self.getScalars(display)
-        #     min_val,max_val=scalars.GetValueRange()
-        #     meshData.GetPointData().SetScalars(scalars)
-        #     # Bindedfilter
-        #     bandedFilter = vtk.vtkBandedPolyDataContourFilter()
-        #     bandedFilter.SetInputData(meshData)
-        #     bandedFilter.GenerateValues(10, min_val, max_val)
-        #     colorTable = getColorTable(bindNum)
-        #     meshMapper.SetLookupTable(colorTable)
-        #     meshMapper.SetInputConnection(bandedFilter.GetOutputPort())
-        #     # meshMapper.SetScalarRange(0,bindNum)
-        #     meshMapper.SetScalarRange(min_val, max_val)
-        #     # meshMapper.SetScalarModeToUseCellData()
-        #     meshMapper.SetScalarModeToUsePointData()
-        #     # meshMapper.SetColorModeToMapScalars()
-        #     # meshMapper.SetScalarModeToDefault()
+        if display in RESULTS.keys():
+            scalars=self.getScalars(display)
+            min_val,max_val=scalars.GetValueRange()
+            meshData.GetPointData().SetScalars(scalars)
+            # Bindedfilter
+            bandedFilter = vtk.vtkBandedPolyDataContourFilter()
+            bandedFilter.SetInputData(meshData)
+            bandedFilter.GenerateValues(10, min_val, max_val)
+            colorTable = getColorTable(bindNum)
+            meshMapper.SetLookupTable(colorTable)
+            meshMapper.SetInputConnection(bandedFilter.GetOutputPort())
+            meshMapper.SetScalarRange(0,bindNum)
+            #wtf:设置颜色条区间有问题
+            # meshMapper.SetScalarRange(min_val, max_val)
+            print "MAX:%s  MIN:%s"%(min_val,max_val)
+            meshMapper.SetScalarModeToUseCellData()
+            # meshMapper.SetScalarModeToUsePointData()
+            # meshMapper.SetColorModeToMapScalars()
+            # meshMapper.SetScalarModeToDefault()
 
-        #     # Add a scalar bar.
-        #     scalarBar = vtk.vtkScalarBarActor()
-        #     scalarBar.SetWidth(0.8)  #颜色条的宽度
-        #     scalarBar.SetHeight(0.1)  #颜色条的高度
-        #     scalarBar.SetPosition(0.1, 0.05)  #颜色条的位置
-        #     scalarBar.SetLabelFormat("%.2f")  #颜色条数值格式
-        #     scalarBar.SetOrientationToHorizontal()
-        #     # scalarBar.SetOrientationToVertical() #颜色条数值方位
-        #     # scalarBar.SetMaximumWidthInPixels(100)
-        #     # scalarBar.SetMaximumHeightInPixels(600)
-        #     scalarBar.SetLookupTable(colorTable)  ##颜色条颜色映射表
-        #     scalarBar.SetTitle("display")  ##颜色条标题栏
-        #     self.actors.append(scalarBar)  ###添加颜色条
-        # else:
-        meshMapper.SetInputData(meshData)
-        # Actor
+            # Add a scalar bar.
+            scalarBar = vtk.vtkScalarBarActor()
+            scalarBar.SetWidth(0.8)  #颜色条的宽度
+            scalarBar.SetHeight(0.1)  #颜色条的高度
+            scalarBar.SetPosition(0.1, 0.05)  #颜色条的位置
+            scalarBar.SetLabelFormat("%.2f")  #颜色条数值格式
+            scalarBar.SetOrientationToHorizontal()
+            # scalarBar.SetOrientationToVertical() #颜色条数值方位
+            # scalarBar.SetMaximumWidthInPixels(100)
+            # scalarBar.SetMaximumHeightInPixels(600)
+            scalarBar.SetLookupTable(colorTable)  ##颜色条颜色映射表
+            scalarBar.SetTitle(display)  ##颜色条标题栏
+            actors.append(scalarBar)  ###添加颜色条
+        else:
+            meshMapper.SetInputData(meshData)
+        # Mesh Actor
         meshActor = vtk.vtkActor()
         meshActor.SetMapper(meshMapper)
         if showLine:
             meshActor.GetProperty().SetRepresentationToWireframe()
-        return  meshActor
+        actors.append(meshActor)
+        return  actors
