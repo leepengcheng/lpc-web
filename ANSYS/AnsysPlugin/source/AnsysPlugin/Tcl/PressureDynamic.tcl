@@ -505,7 +505,6 @@ proc getElementNodeMap {arealist} \
 		return
     }
 
-
 	#erase the elements array
 	if {[info exists elements]} {
 		unset elements

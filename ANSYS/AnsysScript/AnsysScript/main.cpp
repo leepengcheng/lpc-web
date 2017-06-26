@@ -9,20 +9,20 @@ int IsLicenseValid();
 void AnsysShowDialog(char*);
 void AnsysExportScript(char*);
 //////////////////////////////
-void CoutScript_ManagerMaterial();//ï¿½ï¿½ï¿½Ï¿ï¿½
-void CoutScript_ExportResult();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-void CoutScript_ImportParaSolid();//Ä£ï¿½Íµï¿½ï¿½ï¿½
-void CoutScript_PressureWave();//ï¿½ï¿½Ñ¹ï¿½ï¿½
-void CoutScript_ManagerCase();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-void CoutScript_PressureConcentrated();//ï¿½Âµï¿½ï¿½ï¿½
-void CoutScript_PressureStatic();//ï¿½ï¿½Ë®Ñ¹
-void CoutScript_PressureDynamic();//ï¿½ï¿½Ë®Ñ¹
-void CoutScript_PressureUplift();//ï¿½ï¿½Ñ¹ï¿½ï¿½
-void CoutScript_ManagerComponent();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-void CoutScript_SeismicTimeHistory();//Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-void CoutScript_SeismicSpectrum();//ï¿½ï¿½Ó¦ï¿½×·ï¿½ï¿½ï¿½
-void CoutScript_ToolKitSeismic();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
-void CoutScript_ToolKitLoad();//ï¿½Øºï¿½Ê©ï¿½Ó¹ï¿½ï¿½ß¼ï¿½
+void CoutScript_ManagerMaterial();//²ÄÁÏ¹ÜÀí
+void CoutScript_ExportResult();//½á¹ûµ¼³ö
+void CoutScript_ImportParaSolid();//Ä£ÐÍµ¼Èë
+void CoutScript_PressureWave();//ÀËÑ¹Á¦
+void CoutScript_ManagerCase();//¹¤¿ö¹ÜÀí
+void CoutScript_PressureConcentrated();//¼¯ÖÐÁ¦
+void CoutScript_PressureStatic();//¾²Ë®Ñ¹Á¦
+void CoutScript_PressureDynamic();//¶¯Ë®Ñ¹Á¦
+void CoutScript_PressureUplift();//ÑïÑ¹Á¦
+void CoutScript_ManagerComponent();//×é¼þ¹ÜÀí
+void CoutScript_SeismicTimeHistory();//Ê±¼äÀú³Ì
+void CoutScript_SeismicSpectrum();//·´Ó¦Æ×
+void CoutScript_ToolKitSeismic();//µØÕð·ÖÎö¹¤¾ß
+void CoutScript_ToolKitLoad();//ÔØºÉ·ÖÎö¹¤¾ß
 int main(int argc, char *argv[])
 {
 	if (argc != 3) {
@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
 	char* modulename = argv[1];
 	path = argv[2];
 	int verify = IsLicenseValid();
-	verify = 0;
 	if (verify == 0)
 	{
 		AnsysExportScript(modulename);
@@ -779,7 +778,7 @@ cout<<"::euidl::material::MaterialLibrary::main"<<endl;
 
 }
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿?
 void CoutScript_ExportResult()
 {
 cout<<"package	 require msgcat"<<endl;

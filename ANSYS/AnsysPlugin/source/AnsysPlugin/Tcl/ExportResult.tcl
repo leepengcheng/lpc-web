@@ -235,7 +235,7 @@ proc main {} \
 		-command {destroy .exportwindow}]
 
 	$xmlfileCtrls(combo_caseid) insert list end [list 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9]
-	$combo_projectunits insert list end [list "" "" "m-Pa" "m-Pa" "m-Kpa" "m-Kpa"  "m-Mpa" "m-Mpa" "mm-Mpa" "mm-Mpa"]
+	$combo_projectunits insert list end [list "" "" "m-Pa" "m-Pa" "m-Kpa" "m-Kpa"  "m-Mpa" "m-Mpa" "mm-Mpa" "mm-Mpa" "mm-Pa" "mm-Pa"]
 	#Start arrange these controls
 	#Arrange the label tips
 
@@ -356,6 +356,7 @@ proc onButtonOkClick {} \
     set cdb_export 0
 	set xml_export 0
 	##############################
+	catch {ans_sendcommand "/NOPR"} err
     # validate input  and export data
     if {[exportValidation]==1} {
     	#push down the button
@@ -365,20 +366,21 @@ proc onButtonOkClick {} \
 		catch {ans_sendcommand "ALLSEL,ALL"} err
 		#set model units
 		catch {ans_sendcommand "*set,_PROJECT_UNITS,'$projectunits'"} err
-    	if {$cdb_export==1} {
-				#save current project name property to _PROJECT_NAME&_PROJECT_PROPERTY
-				catch {ans_sendcommand "*set,_PROJECT_NAME,'$projectname'"} err
-				catch {ans_sendcommand "*set,_PROJECT_PROPERTY,'$projectproperty'"} err
-				exportCdb
-			}
-    	if {$xml_export==1} {
+		if {$xml_export==1} {
 				#save loadcase name property
 				set casename_index     [format "_LOADCASE_%s_NAME"     $caseid]
 				set caseproperty_index [format "_LOADCASE_%s_PROPERTY" $caseid]
 				catch {ans_sendcommand "*set,$casename_index,'$casename'"} err
 				catch {ans_sendcommand "*set,$caseproperty_index,'$caseproperty'"} err
 				exportXml
+		}
+    	if {$cdb_export==1} {
+				#save current project name property to _PROJECT_NAME&_PROJECT_PROPERTY
+				catch {ans_sendcommand "*set,_PROJECT_NAME,'$projectname'"} err
+				catch {ans_sendcommand "*set,_PROJECT_PROPERTY,'$projectproperty'"} err
+				exportCdb
 			}
+
     } else {
     	$btnok configure -relief raised
     	$btnok configure -state  normal
@@ -391,6 +393,7 @@ proc onButtonOkClick {} \
 	set msg [tk_messageBox -icon info \
 		-title [msgcat::mc "Tips "] \
 		-message  [msgcat::mc "Export Is Done! "]]
+	catch {ans_sendcommand "/GOPR"} err
 }
 
 #validate the input data
@@ -493,10 +496,37 @@ proc exportValidation {} \
 	return  1
 }
 
+#export cdb and append areas information
 proc exportCdb {} \
 {
 	variable cdbfile
+	variable areasinfo
+	variable elementnum
+
+	#export cdb
 	catch {ans_sendcommand "CDWRITE,ALL,'$cdbfile'"} err
+	#sleep 1000ms to check if cdbfile was created
+	after 1000 {set sleep 1}
+	vwait sleep
+	#check if cdbfile was created again
+	if {![file exists $cdbfile]} {
+		puts "cdb file does not exists!!!"
+		return
+	}
+	#get Area data
+	get_AreaInformation
+	set cdbfl [open $cdbfile a]
+	set num 1
+	puts $cdbfl   "ABLOCK,3,$elementnum,$elementnum"
+	puts $cdbfl   "(1i10,1i40,1i10)"
+	foreach area [array names areasinfo] {
+		foreach ele $areasinfo($area) {
+			puts  $cdbfl [format "%10d%40s%10d" $num $ele  $area]
+			incr num
+		}
+	}
+	##close cdb flie
+	catch {close $cdbfl} err 
 }
 proc exportXml {} \
 {
@@ -519,24 +549,31 @@ proc exportXml {} \
 		Sx 1 Sy 1 Sz 1 S1 1  S2 1 S3 1 \
 		Sxy 1 Syz 1 Sxz 1 Seqv 1}
 	#translate projectunits m-pa to mm-Mpa
-    set MMpa_MMMpa {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
+    set M_Mpa_MMMpa {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
 		Sx 1 Sy 1 Sz 1 S1 1  S2 1 S3 1 \
 		Sxy 1 Syz 1 Sxz 1 Seqv 1}
-	set MPa_MMMpa  {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
+	set M_Pa_MMMpa  {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
 		Sx 1.0e-6 Sy 1.0e-6 Sz 1.0e-6 S1 1.0e-6 S2 1.0e-6 S3 1.0e-6 Sxy \
 		1.0e-6 Syz 1.0e-6 Sxz 1.0e-6 Seqv 1.0e-6}
     ##translate projectunits m-Kpa to mm-Mpa
-    set MKpa_MMMpa  {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
+    set M_Kpa_MMMpa  {Ux 1000 Uy 1000 Uz 1000 Usum 1000 \
 		Sx 1.0e-3 Sy 1.0e-3 Sz 1.0e-3 S1 1.0e-3 S2 1.0e-3 S3 1.0e-3 Sxy \
 		1.0e-3 Syz 1.0e-3 Sxz 1.0e-3 Seqv 1.0e-3}
 
+	##translate projectunits mm-Pa to mm-Mpa
+    set MM_Pa_MMMpa  {Ux 1 Uy 1 Uz 1 Usum 1 \
+		Sx 1.0e-6 Sy 1.0e-6 Sz 1.0e-6 S1 1.0e-6 S2 1.0e-6 S3 1.0e-6 Sxy \
+		1.0e-6 Syz 1.0e-6 Sxz 1.0e-6 Seqv 1.0e-6}
+
     if {$projectunits=="m-Kpa"} {
-    	array set theunitList $MKpa_MMMpa
+    	array set theunitList $M_Kpa_MMMpa
     } elseif {$projectunits=="m-Pa"} {
-    	array set theunitList $MPa_MMMpa
+    	array set theunitList $M_Pa_MMMpa
     } elseif {$projectunits=="m-Mpa"} {
-        array set theunitList $MMpa_MMMpa
-    } else {
+        array set theunitList $M_Mpa_MMMpa
+    } elseif {$projectunits=="mm-Pa"} {
+		array set theunitList $MM_Pa_MMMpa
+	} else {
         array set theunitList $MMMpa
     }
 	
@@ -816,6 +853,80 @@ proc button_del_click {args} \
 	
 }
 
+#append  Area Information to cdb file
+proc get_AreaInformation {}\
+{
+	variable elements
+	variable areasinfo
+	variable elementnum
+
+
+	if {[info exists areasinfo]} {
+		unset areasinfo
+	}
+	#element num
+	set elementnum 0
+	#get all areas
+	set arealist [get_SelectedAreas]
+	#select None area
+	foreach area $arealist {
+		#update Area elements variable
+		get_AreaElementNodeMap $area
+		foreach name [array names elements] {
+			set enodes $elements($name)
+			if {[llength $enodes]<3} {
+				continue
+			}
+			set element [join [lsort -decreasing $enodes] "-"]
+			lappend areasinfo($area)  $element
+			incr elementnum
+		}
+	}
+}
+
+
+proc get_AreaElementNodeMap {area} \
+{
+	variable elements
+
+	#restore the elements varable 
+	if {[info exists elements]} {
+		unset elements
+	}
+	#select the area
+	catch {ans_sendcommand "ASEL,S,,,$area"} err 
+	#select all nodes attach the area
+	catch {ans_sendcommand "NSLA,S,1"} err
+	set count [ans_getvalue "node,,count"]
+	set ndnum  0
+	for {set i 0} {$i < $count} {incr i} {
+		set  ndnum [ans_evalexpr "NDNEXT($ndnum)"]
+		#adjent elements num 
+		for {set j 1} {$j < 10} {incr j} {
+			set enum  [ans_evalexpr "ENEXTN($ndnum,$j)"]
+			if {$enum!=0} {
+				lappend elements($enum) $ndnum 
+			} else {
+				break
+			}
+		}
+	}
+}
+
+proc get_SelectedAreas {} \
+{
+	catch {ans_sendcommand "ASEL,all"} err
+	set area_nums [ans_getvalue "area,,count"]
+	set num 0
+	set areas {}
+	for {set i 0} {$i < $area_nums} {incr i} {
+		set num [ans_evalexpr arnext($num)]
+		if {$num!=0} {
+			lappend areas $num
+		}
+	}
+	return $areas
+}
 
 proc autoCompleteData {} \
 {
