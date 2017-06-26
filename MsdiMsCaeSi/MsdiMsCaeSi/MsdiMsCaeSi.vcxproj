@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="MicroStation">
+    <!--innovoCAD Visual Studio Tools for MicroStation CONNECT Edition -->
+    <MicroStationGUID>{E6165299-985C-418F-9CCE-35C87D0CA2A1}</MicroStationGUID>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5FA9BC81-327F-4F5A-8A71-86E6ACB2D81C}</ProjectGuid>
+    <RootNamespace>MsdiMsCaeSi</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NMakeBuildCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" +a</NMakeBuildCommandLine>
+    <NMakeOutput>MsdiMsCaeSi</NMakeOutput>
+    <NMakeCleanCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" +aD</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" +a</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath);$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies\ECFramework;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies;$(ReferencePath);$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies>$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\mdlapps\</OutDir>
+    <LibraryPath>C:\PROGRA~1\Bentley\MICROS~2\mdl\Library\;$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
+    <TargetExt>.dll</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <LocalDebuggerCommand>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\microstation.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>$(MSArg)</LocalDebuggerCommandArguments>
+    <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <IntDir>bin\$(Configuration)\</IntDir>
+    <IncludePath>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath)</IncludePath>
+    <ReferencePath>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies\ECFramework;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies;$(ReferencePath)</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NMakeBuildCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" +a</NMakeBuildCommandLine>
+    <NMakeOutput>MsdiMsCaeSi</NMakeOutput>
+    <NMakeCleanCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" "+aD"</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>$(systemdrive)\ProgramData\innovoCAD\Bentley\VisualStudioTools\CONNECTBuildV1.bat C:\PROGRA~1\Bentley\MICROS~1\MICROS~1\ C:\PROGRA~1\Bentley\MICROS~2\ "$(IntDir)\" "$(ProjectDir)" +a</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath);$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath);$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies\ECFramework;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies;$(ReferencePath);$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies>$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\mdlapps\</OutDir>
+    <LibraryPath>C:\PROGRA~1\Bentley\MICROS~2\mdl\Library\;$(WindowsSdkDir)\common\lib;$(LibraryPath)</LibraryPath>
+    <TargetExt>.dll</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+    <LocalDebuggerCommand>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\microstation.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>$(MSArg)</LocalDebuggerCommandArguments>
+    <LocalDebuggerAttach>true</LocalDebuggerAttach>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <IntDir>bin\$(Configuration)\</IntDir>
+    <IncludePath>C:\PROGRA~1\Bentley\MICROS~2\include\;$(ProjectDir);$(IncludePath)</IncludePath>
+    <ReferencePath>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies\ECFramework;C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\assemblies;$(ReferencePath)</ReferencePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Wi642'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProfileGuidedDatabase>bin\debug\$(TargetName).pgd</ProfileGuidedDatabase>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ManifestFile>bin\debug\$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
+      <ImportLibrary>bin\debug\$(TargetName).lib</ImportLibrary>
+      <ProgramDatabaseFile>C:\Program Files\Bentley\MicroStation CONNECT Edition\MicroStation\mdlapps\$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="calculateRebar.cpp" />
+    <ClCompile Include="caseCompareDlgHook.cpp" />
+    <ClCompile Include="ClipFace.cpp" />
+    <ClCompile Include="ClipPlotFace.cpp" />
+    <ClCompile Include="clipResultShowDlgHook.cpp" />
+    <ClCompile Include="ColorandValueSetDlgHook.cpp" />
+    <ClCompile Include="ContourLine.cpp" />
+    <ClCompile Include="ContourOutFaceLine.cpp" />
+    <ClCompile Include="ContourPlot.cpp" />
+    <ClCompile Include="ContourUtility.cpp" />
+    <ClCompile Include="ContourVector.cpp" />
+    <ClCompile Include="CreateCAESolid.cpp" />
+    <ClCompile Include="dbFunction.cpp" />
+    <ClCompile Include="DrawColorShape.cpp" />
+    <ClCompile Include="DrawVectorGraph.cpp" />
+    <ClCompile Include="ExportCalcDlgHook.cpp" />
+    <ClCompile Include="exportTool.cpp" />
+    <ClCompile Include="ImportCAEInf.cpp" />
+    <ClCompile Include="ImportCaeInfDlgHook.cpp" />
+    <ClCompile Include="mfc\DocumentOutput.cpp" />
+    <ClCompile Include="MoveClipPlot.cpp" />
+    <ClCompile Include="MsdiMsCaeSi.cpp" />
+    <ClCompile Include="MsdiMsCaeSi.h" />
+    <ClCompile Include="MsdiMsCaeSiUtility.cpp" />
+    <ClCompile Include="nodeViewer.cpp" />
+    <ClCompile Include="OutColumnData.cpp" />
+    <ClCompile Include="outputRebarDlgHook.cpp" />
+    <ClCompile Include="OutDataList.cpp" />
+    <ClCompile Include="partialDisplay.cpp" />
+    <ClCompile Include="partialDisplayDlgHook.cpp" />
+    <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="SelectGroup.cpp" />
+    <ClCompile Include="SolidContourDispDlgHook.cpp" />
+    <ClCompile Include="SolidMeshShowDlgHook.cpp" />
+    <ClCompile Include="surfaceShowDlgHook.cpp" />
+    <ClInclude Include="BentlyCommonfile.h" />
+    <ClInclude Include="calculateRebar.h" />
+    <ClInclude Include="caseCompareDlgHook.h" />
+    <ClInclude Include="ClipFace.h" />
+    <ClInclude Include="ClipPlotFace.h" />
+    <ClInclude Include="clipResultShowDlgHook.h" />
+    <ClInclude Include="ColorandValueSetDlgHook.h" />
+    <ClInclude Include="CommonStructFile.h" />
+    <ClInclude Include="ContourLine.h" />
+    <ClInclude Include="ContourOutFaceLine.h" />
+    <ClInclude Include="ContourPlot.h" />
+    <ClInclude Include="ContourUtility.h" />
+    <ClInclude Include="ContourVector.h" />
+    <ClInclude Include="CreateCAESolid.h" />
+    <ClInclude Include="dbFunction.h" />
+    <ClInclude Include="DrawColorShape.h" />
+    <ClInclude Include="DrawVectorGraph.h" />
+    <ClInclude Include="ExportCalcDlgHook.h" />
+    <ClInclude Include="exportTool.h" />
+    <ClInclude Include="ImportCAEInf.h" />
+    <ClInclude Include="ImportCaeInfDlgHook.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="mfc\MSWord.h" />
+    <ClInclude Include="mfc\OLEMethod.h" />
+    <ClInclude Include="mfc\stdafx.h" />
+    <ClInclude Include="MoveClipPlot.h" />
+    <ClInclude Include="MsdiMsCaeSi.mke" />
+    <ClInclude Include="MsdiMsCaeSi.r" />
+    <ClCompile Include="MsdiMsCaeSicmd.h" />
+    <ClInclude Include="MsdiMsCaeSicmd.r" />
+    <ClInclude Include="MsdiMsCaeSiids.h" />
+    <ClInclude Include="MsdiMsCaeSipch.h" />
+    <ClInclude Include="MsdiMsCaeSirsc.mki" />
+    <ClInclude Include="MsdiMsCaeSiUtility.h" />
+    <ClInclude Include="OutColumnData.h" />
+    <ClInclude Include="outputRebarDlgHook.h" />
+    <ClInclude Include="OutDataList.h" />
+    <ClInclude Include="partialDisplay.h" />
+    <ClInclude Include="partialDisplayDlgHook.h" />
+    <ClInclude Include="pugixml\pugiconfig.hpp" />
+    <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="SelectGroup.h" />
+    <ClInclude Include="SolidContourDispDlgHook.h" />
+    <ClInclude Include="SolidMeshShowDlgHook.h" />
+    <ClInclude Include="surfaceShowDlgHook.h" />
+    <ClInclude Include="transkit\MsdiMsCaeSitxt.h" />
+    <ClInclude Include="transkit\transkit.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="caseCompareDlg.r" />
+    <None Include="clipFaceCmdDlg.r" />
+    <None Include="clipPlotFaceCmdDlg.r" />
+    <None Include="clipResultShowDlg.r" />
+    <None Include="exportCalculationDlg.r" />
+    <None Include="ImportCaeInfDlg.r" />
+    <None Include="ExportXmtDlg.r" />
+    <None Include="nodeViewer.h" />
+    <None Include="outputRebarDlg.r" />
+    <None Include="partialDisplayDlg.r" />
+    <None Include="SolidMeshShowDlg.r" />
+    <None Include="SolidContourDispDlg.r" />
+    <None Include="SetContourColorDlg.r" />
+    <None Include="MsdiMsCaeSityp.mt" />
+    <None Include="surfaceShowDlg.r" />
+    <None Include="transkit\MsdiMsCaeSimsg.r" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

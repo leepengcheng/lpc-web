@@ -1,0 +1,22 @@
+#--------------------------------------------------------------------------------------+
+#   MsdiMsCaeSirsc.mki
+#
+#--------------------------------------------------------------------------------------*/
+appName     = MsdiMsCaeSi
+sAppName    = MsdiMsCaeSi
+
+outputDir = $(MA_DEST)
+
+langSpec    = $(baseDir)transkit/
+
+appRscs =   \
+         $(reqdObjs)$(appName).mi \
+
+$(outputDir)$(appName).ma       : $(appRscs)
+    $(msg)
+    > $(rscObjects)make.opt
+    -o$@
+    $(appRscs)
+    <
+    $(RLibCmd) @$(rscObjects)make.opt
+    ~time

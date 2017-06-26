@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="transkit">
+      <UniqueIdentifier>{4f40be58-62c5-4790-a06a-2db7aae5f46d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CAEResultShow">
+      <UniqueIdentifier>{89770764-eef6-45d5-ac6f-0bb899939cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CAEResultShow">
+      <UniqueIdentifier>{d3a8cbc5-c3b7-4334-aed8-c6e835c214a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImpExpData">
+      <UniqueIdentifier>{00a93842-c0f1-4e16-bcc2-81b2624065de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImpExpData">
+      <UniqueIdentifier>{69d240fe-0842-404b-bea3-1d82b4c8e5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Log">
+      <UniqueIdentifier>{685ef4e1-4098-40ea-b408-b7008f3ff013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\DialogBox">
+      <UniqueIdentifier>{8f0e563c-e8d0-4556-8ed4-365da135d780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DialogBoxHook">
+      <UniqueIdentifier>{c3454fd4-f9d6-40b5-9934-5b0f3c54b024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DialogBoxHook">
+      <UniqueIdentifier>{e14125c2-ae4b-4c3e-aabb-4a3ba809ebb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CAEResultOutPut">
+      <UniqueIdentifier>{9adeaa31-61c4-4b80-8f7f-85fb49cd0b98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CAEResultOutPut">
+      <UniqueIdentifier>{dcb57e8a-2e4b-4935-af42-714c86814e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CAEElemShow">
+      <UniqueIdentifier>{1fd83d10-b46d-40a0-ac92-5f24db3e65f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CAEElemShow">
+      <UniqueIdentifier>{a963d4d6-8fa8-47e2-8fe6-8acf26f0c228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{64cad882-ca59-4af0-8738-aa678cf65687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{ec67c15d-49e2-4098-a3c3-be6471432363}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{05178ed0-217a-47cf-bc4e-d1034512666c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DocumentOutput">
+      <UniqueIdentifier>{8d281619-0a3e-4db6-97bd-a60e14cb0a5f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MsdiMsCaeSi.mke" />
+    <ClInclude Include="MsdiMsCaeSirsc.mki" />
+    <ClInclude Include="MsdiMsCaeSipch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsdiMsCaeSiids.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ContourLine.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="ContourPlot.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="ContourVector.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawColorShape.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawVectorGraph.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="exportTool.h">
+      <Filter>Header Files\ImpExpData</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportCAEInf.h">
+      <Filter>Header Files\ImpExpData</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportCaeInfDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidMeshShowDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidContourDispDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="ContourUtility.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportCalcDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="mfc\MSWord.h">
+      <Filter>DocumentOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="mfc\OLEMethod.h">
+      <Filter>DocumentOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="mfc\stdafx.h">
+      <Filter>DocumentOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorandValueSetDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="partialDisplayDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="caseCompareDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="calculateRebar.h">
+      <Filter>Header Files\CAEResultOutPut</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateCAESolid.h">
+      <Filter>Header Files\CAEElemShow</Filter>
+    </ClInclude>
+    <ClInclude Include="partialDisplay.h">
+      <Filter>Header Files\CAEElemShow</Filter>
+    </ClInclude>
+    <ClInclude Include="clipResultShowDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="BentlyCommonfile.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonStructFile.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ClipPlotFace.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="ClipFace.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveClipPlot.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="OutColumnData.h">
+      <Filter>Header Files\CAEResultOutPut</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectGroup.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="surfaceShowDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="dbFunction.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="outputRebarDlgHook.h">
+      <Filter>Header Files\DialogBoxHook</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugiconfig.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugixml.hpp">
+      <Filter>pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="MsdiMsCaeSiUtility.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="OutDataList.h">
+      <Filter>Header Files\CAEResultOutPut</Filter>
+    </ClInclude>
+    <ClInclude Include="ContourOutFaceLine.h">
+      <Filter>Header Files\CAEResultShow</Filter>
+    </ClInclude>
+    <ClInclude Include="log.h">
+      <Filter>Header Files\Log</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MsdiMsCaeSi.r">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsdiMsCaeSicmd.r">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="transkit\MsdiMsCaeSitxt.h">
+      <Filter>transkit</Filter>
+    </ClInclude>
+    <ClInclude Include="transkit\transkit.xml">
+      <Filter>transkit</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MsdiMsCaeSi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsdiMsCaeSi.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsdiMsCaeSicmd.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContourLine.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="ContourPlot.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="ContourVector.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawColorShape.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawVectorGraph.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="exportTool.cpp">
+      <Filter>Source Files\ImpExpData</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportCAEInf.cpp">
+      <Filter>Source Files\ImpExpData</Filter>
+    </ClCompile>
+    <ClCompile Include="ImportCaeInfDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidMeshShowDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidContourDispDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="ContourUtility.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportCalcDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="mfc\DocumentOutput.cpp">
+      <Filter>DocumentOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorandValueSetDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="partialDisplayDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="caseCompareDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="clipResultShowDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="calculateRebar.cpp">
+      <Filter>Source Files\CAEResultOutPut</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateCAESolid.cpp">
+      <Filter>Source Files\CAEElemShow</Filter>
+    </ClCompile>
+    <ClCompile Include="partialDisplay.cpp">
+      <Filter>Source Files\CAEElemShow</Filter>
+    </ClCompile>
+    <ClCompile Include="ClipPlotFace.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="ClipFace.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveClipPlot.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="OutColumnData.cpp">
+      <Filter>Source Files\CAEResultOutPut</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectGroup.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="surfaceShowDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="dbFunction.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="outputRebarDlgHook.cpp">
+      <Filter>Source Files\DialogBoxHook</Filter>
+    </ClCompile>
+    <ClCompile Include="ContourOutFaceLine.cpp">
+      <Filter>Source Files\CAEResultShow</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml\pugixml.cpp">
+      <Filter>pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="OutDataList.cpp">
+      <Filter>Source Files\CAEResultOutPut</Filter>
+    </ClCompile>
+    <ClCompile Include="nodeViewer.cpp">
+      <Filter>Source Files\CAEElemShow</Filter>
+    </ClCompile>
+    <ClCompile Include="MsdiMsCaeSiUtility.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="transkit\MsdiMsCaeSimsg.r">
+      <Filter>transkit</Filter>
+    </None>
+    <None Include="MsdiMsCaeSityp.mt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ImportCaeInfDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="ExportXmtDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="SetContourColorDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="SolidContourDispDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="SolidMeshShowDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="caseCompareDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="partialDisplayDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="clipResultShowDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="exportCalculationDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="surfaceShowDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="outputRebarDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="clipFaceCmdDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="clipPlotFaceCmdDlg.r">
+      <Filter>Resource Files\DialogBox</Filter>
+    </None>
+    <None Include="nodeViewer.h">
+      <Filter>Header Files\CAEElemShow</Filter>
+    </None>
+  </ItemGroup>
+</Project>

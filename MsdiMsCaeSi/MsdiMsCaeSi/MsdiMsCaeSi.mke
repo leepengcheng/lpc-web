@@ -1,0 +1,302 @@
+#--------------------------------------------------------------------------------------+
+#   MsdiMsCaeSi.mke
+#
+#--------------------------------------------------------------------------------------*/
+
+MA_DEST	= $(basedir)debug/
+PolicyFile = MicroStationPolicy.mki
+DEFAULT_TARGET_PROCESSOR_ARCHITECTURE=x64
+MDLMKI = $(MSMDE)mki/
+mdlLibs = $(MSMDE)library/
+dirToSearch = $(MDLMKI)
+genSrc = $(o)
+%include $(MDLMKI)mdl.mki
+%include $(MDLMKI)cincapnd.mki
+
+appName     = MsdiMsCaeSi
+sAppName    = MsdiMsCaeSi
+
+outputDir   = $(mdlApps)
+
+privateInc  = $(baseDir)
+langSpec    = $(baseDir)transkit/
+
+
+appRscs = $(rscObjects)$(appName).rsc \
+          $(rscObjects)$(appName)msg.rsc \
+          $(rscObjects)$(sAppName)cmd.rsc \
+		  $(rscObjects)$(sAppName)typ.rsc \
+          $(rscObjects)ImportCaeInfDlg.rsc \
+		  $(rscObjects)SetContourColorDlg.rsc \
+		  $(rscObjects)ExportXmtDlg.rsc \
+		  $(rscObjects)SolidContourDispDlg.rsc \
+		  $(rscObjects)SolidMeshShowDlg.rsc  \
+		  $(rscObjects)exportCalculationDlg.rsc  \
+		  $(rscObjects)partialDisplayDlg.rsc \
+		  $(rscObjects)caseCompareDlg.rsc \
+		  $(rscObjects)clipResultShowDlg.rsc \
+		  $(rscObjects)surfaceShowDlg.rsc \
+		  $(rscObjects)outputRebarDlg.rsc \
+		  $(rscObjects)clipFaceCmdDlg.rsc \
+		  $(rscObjects)clipPlotFaceCmdDlg.rsc
+
+#----------------------------------------------------------------------
+# Create the Windows resource file (.rc) with the BITMAPs
+#----------------------------------------------------------------------
+rscFile = $(MA_DEST)$(appName)ico.rsc
+
+#----------------------------------------------------------------------
+# The list determines the order of the icos in the resource file
+# Grouping related icons together improves performance, so do
+# not just add icons are random places in the list. Do not
+# try to make the list alphabetical.
+#----------------------------------------------------------------------
+filelist + $(baseDir)icons/model.ico
+filelist + $(baseDir)icons/result.ico
+filelist + $(baseDir)icons/section.ico
+filelist + $(baseDir)icons/rebarline.ico
+
+$(rscFile) : $(filelist)
+	> $(o)filelist.opt
+	$(filelist)
+	<
+	wiconpackager -o$(rscFile) @$(o)filelist.opt
+
+#----------------------------------------------------------------------
+# Create needed output directories in case they don't exist
+#----------------------------------------------------------------------
+always:
+    !~@mkdir $(o)
+    !~@mkdir $(rscObjects)
+    !~@mkdir $(reqdObjs)
+	!~@mkdir $(MA_DEST)
+
+
+#-----------------------------------------------------------------------
+#	Define constants specific to this example
+#-----------------------------------------------------------------------
+
+#-----------------------------------------------------------------------
+#	Generate non-language resource files
+#-----------------------------------------------------------------------
+$(baseDir)$(sAppName)cmd.h       : $(baseDir)$(sAppName)cmd.r
+
+$(rscObjects)$(sAppName)cmd.rsc : $(baseDir)$(sAppName)cmd.r
+
+$(rscObjects)$(appName).rsc     :$(baseDir)$(appName).r
+
+$(rscObjects)ExportXmtDlg.rsc     :$(baseDir)ExportXmtDlg.r
+
+$(rscObjects)ImportCaeInfDlg.rsc     :$(baseDir)ImportCaeInfDlg.r
+
+$(rscObjects)SetContourColorDlg.rsc     :$(baseDir)SetContourColorDlg.r
+
+$(rscObjects)SolidContourDispDlg.rsc     :$(baseDir)SolidContourDispDlg.r
+
+$(rscObjects)SolidMeshShowDlg.rsc     :$(baseDir)SolidMeshShowDlg.r
+
+$(rscObjects)exportCalculationDlg.rsc	:$(baseDir)exportCalculationDlg.r
+
+$(rscObjects)partialDisplayDlg.rsc	:$(baseDir)partialDisplayDlg.r
+
+$(rscObjects)caseCompareDlg.rsc		:$(baseDir)caseCompareDlg.r
+
+$(rscObjects)clipResultShowDlg.rsc	:$(baseDir)clipResultShowDlg.r
+
+$(rscObjects)surfaceShowDlg.rsc		:$(baseDir)surfaceShowDlg.r
+
+$(rscObjects)outputRebarDlg.rsc		:$(baseDir)outputRebarDlg.r
+
+$(rscObjects)clipFaceCmdDlg.rsc		:$(baseDir)clipFaceCmdDlg.r
+
+$(rscObjects)clipPlotFaceCmdDlg.rsc		:$(baseDir)clipPlotFaceCmdDlg.r
+
+#-----------------------------------------------------------------------
+#	Generate language resource files
+#-----------------------------------------------------------------------
+$(rscObjects)$(appName)msg.rsc              :$(langSpec)$(sAppName)msg.r
+
+
+#---------------------------------------------
+#	Create & compile the application's type resource file using rsctype
+#	 and rcomp
+#---------------------------------------------
+$(o)$(sAppName)typ.r    : $(baseDir)$(sAppName)typ.mt $(baseDir)$(appName).h
+
+$(rscObjects)$(sAppName)typ.rsc  : $(o)$(sAppName)typ.r
+
+#------------------------------------------------
+#	Set up to use dlmcomp.mki and dlmlink.mki
+#------------------------------------------------
+dlmObjs           = $(o)$(appName)$(oext) \
+					$(o)ImportCAEInf$(oext) \
+					$(o)CreateCAESolid$(oext) \
+					$(o)ContourPlot$(oext) \
+					$(o)ContourLine$(oext) \
+					$(o)DrawVectorGraph$(oext) \
+					$(o)DrawColorShape$(oext)  \
+					$(o)exportTool$(oext)      \
+					$(o)ContourVector$(oext) \
+					$(o)ImportCaeInfDlgHook$(oext) \
+					$(o)SolidMeshShowDlgHook$(oext) \
+					$(o)SolidContourDispDlgHook$(oext) \
+					$(o)ContourUtility$(oext) \
+					$(o)ExportCalcDlgHook$(oext) \
+					$(o)dbFunction$(oext) \
+					$(o)DocumentOutput$(oext) \
+					$(o)calculateRebar$(oext)\
+					$(o)ClipFace$(oext) \
+					$(o)ClipPlotFace$(oext) \
+					$(o)MoveClipPlot$(oext)  \
+					$(o)SelectGroup$(oext)  \
+					$(o)OutColumnData$(oext) \
+					$(o)partialDisplay$(oext) \
+					$(o)partialDisplayDlgHook$(oext) \
+					$(o)ColorandValueSetDlgHook$(oext) \
+					$(o)caseCompareDlgHook$(oext) \
+					$(o)clipResultShowDlgHook$(oext) \
+					$(o)surfaceShowDlgHook$(oext) \
+					$(o)outputRebarDlgHook$(oext) \
+					$(o)OutDataList$(oext) \
+					$(o)pugixml$(oext) \
+					$(o)ContourOutFaceLine$(oext) \
+					$(o)nodeViewer$(oext) \
+					$(o)MsdiMsCaeSiUtility$(oext)
+
+
+DLM_NAME                = $(appName)
+DLM_DEST                = $(MA_DEST)
+DLM_OBJECT_FILES        = $(dlmObjs)
+DLM_OBJECT_DEST         = $(o)
+DLM_SPECIAL_LINKOPT     = -fixed:no     # Notify linker this library does not require a fixed base address to load
+DLM_NO_DLS              = 1             # USE DLLEXPORT IN .CPP
+DLM_NO_DEF              = 1
+DLM_NOENTRY             = 1
+DLM_NO_MANIFEST         = 1             # If not set linker embeds your current (developer) patched MSVCRT version manifest in output dll.  This is not desirable and produces side-by-side CLIENT ERROR: 14001)
+DLM_NO_SIGN             = 1             # If not set and no certificate found, ERROR: 'singleton' is not recognized as an internal or external command
+LINKER_LIBRARIES        = $(mdlLibs)bentley.lib \
+                          $(mdlLibs)mdlbltin.lib \
+                          $(mdlLibs)BentleyGeom.lib \
+                          $(mdlLibs)DgnPlatform.lib \
+                          $(mdlLibs)dgnview.lib \
+                          $(mdlLibs)RmgrTools.lib \
+						  $(mdlLibs)mstntoolsubs.lib \
+						  $(mdlLibs)mdlxmltools.lib \
+						  $(mdlLibs)BeSQLite.lib \
+						  $(mdlLibs)animcore.lib \
+						  $(mdlLibs)BaseGeoCoord.lib \
+						  $(mdlLibs)Bentley.GeoCoord.lib \
+                          $(mdlLibs)PSolidCore.lib \
+						  $(mdlLibs)BentleyAllocator.lib \
+						  $(mdlLibs)mspsolid.lib \
+                          $(mdlLibs)ImageLib.lib \
+						  $(baseDir)PitOffice.lib
+
+#------------------------------------------------
+#   Compile the source files for the DLM
+#------------------------------------------------
+
+$(o)$(appName)$(oext): $(baseDir)$(appName).cpp  $(baseDir)$(appName).h   $(baseDir)log.h
+
+$(o)ImportCAEInf$(oext): $(baseDir)ImportCAEInf.cpp $(baseDir)ImportCAEInf.h 
+
+$(o)CreateCAESolid$(oext): $(baseDir)CreateCAESolid.cpp $(baseDir)CreateCAESolid.h
+
+$(o)ContourPlot$(oext): $(baseDir)ContourPlot.cpp $(baseDir)ContourPlot.h
+
+$(o)ContourLine$(oext): $(baseDir)ContourLine.cpp $(baseDir)ContourLine.h
+
+$(o)DrawVectorGraph$(oext): $(baseDir)DrawVectorGraph.cpp $(baseDir)DrawVectorGraph.h
+
+$(o)DrawColorShape$(oext): $(baseDir)DrawColorShape.cpp $(baseDir)DrawColorShape.h
+
+$(o)exportTool$(oext): $(baseDir)exportTool.cpp $(baseDir)exportTool.h
+
+$(o)ContourVector$(oext): $(baseDir)ContourVector.cpp $(baseDir)ContourVector.h
+
+$(o)ImportCaeInfDlgHook$(oext): $(baseDir)ImportCaeInfDlgHook.cpp $(baseDir)ImportCaeInfDlgHook.h
+
+$(o)SolidMeshShowDlgHook$(oext): $(baseDir)SolidMeshShowDlgHook.cpp $(baseDir)SolidMeshShowDlgHook.h
+
+$(o)SolidContourDispDlgHook$(oext): $(baseDir)SolidContourDispDlgHook.cpp $(baseDir)SolidContourDispDlgHook.h
+
+$(o)ContourUtility$(oext): $(baseDir)ContourUtility.cpp $(baseDir)ContourUtility.h
+
+$(o)ClipFace$(oext): $(baseDir)ClipFace.cpp $(baseDir)ClipFace.h
+
+$(o)ClipPlotFace$(oext): $(baseDir)ClipPlotFace.cpp $(baseDir)ClipPlotFace.h
+
+$(o)MoveClipPlot$(oext): $(baseDir)MoveClipPlot.cpp $(baseDir)MoveClipPlot.h
+
+$(o)SelectGroup$(oext): $(baseDir)SelectGroup.cpp $(baseDir)SelectGroup.h
+
+$(o)OutColumnData$(oext): $(baseDir)OutColumnData.cpp $(baseDir)OutColumnData.h
+
+$(o)ExportCalcDlgHook$(oext): $(baseDir)ExportCalcDlgHook.cpp $(baseDir)ExportCalcDlgHook.h
+
+$(o)ColorandValueSetDlgHook$(oext): $(baseDir)ColorandValueSetDlgHook.cpp $(baseDir)ColorandValueSetDlgHook.h
+
+$(o)dbFunction$(oext): $(baseDir)dbFunction.cpp $(baseDir)dbFunction.h
+
+$(o)DocumentOutput$(oext)	:	$(baseDir)mfc/DocumentOutput.cpp
+
+$(o)calculateRebar$(oext): $(baseDir)calculateRebar.cpp $(baseDir)calculateRebar.h
+
+$(o)partialDisplay$(oext): $(baseDir)partialDisplay.cpp $(baseDir)partialDisplay.h
+
+$(o)partialDisplayDlgHook$(oext): $(baseDir)partialDisplayDlgHook.cpp $(baseDir)partialDisplayDlgHook.h
+
+$(o)caseCompareDlgHook$(oext): $(baseDir)caseCompareDlgHook.cpp $(baseDir)caseCompareDlgHook.h
+
+$(o)clipResultShowDlgHook$(oext): $(baseDir)clipResultShowDlgHook.cpp $(baseDir)clipResultShowDlgHook.h
+
+$(o)surfaceShowDlgHook$(oext): $(baseDir)surfaceShowDlgHook.cpp $(baseDir)surfaceShowDlgHook.h
+
+$(o)outputRebarDlgHook$(oext): $(baseDir)outputRebarDlgHook.cpp $(baseDir)outputRebarDlgHook.h
+
+$(o)OutDataList$(oext): $(baseDir)OutDataList.cpp $(baseDir)OutDataList.h
+
+$(o)ContourOutFaceLine$(oext): $(baseDir)ContourOutFaceLine.cpp $(baseDir)ContourOutFaceLine.h
+
+$(o)nodeViewer$(oext): $(baseDir)nodeViewer.cpp $(baseDir)nodeViewer.h
+
+$(o)pugixml$(oext): $(baseDir)pugixml/pugixml.cpp $(baseDir)pugixml/pugixml.hpp $(baseDir)pugixml/pugiconfig.hpp
+
+$(o)MsdiMsCaeSiUtility$(oext): $(baseDir)MsdiMsCaeSiUtility.cpp $(baseDir)MsdiMsCaeSiUtility.h
+
+#------------------------------------------------
+#	Use dlmlink.mki to compile the Dynamic 
+#       Load Specification (.dls) file and link
+#       the DLM.
+#------------------------------------------------
+%include $(MDLMKI)dlmlink.mki
+
+#-----------------------------------------------------------------------
+#	Compile and link MDL DLL Application
+#-----------------------------------------------------------------------
+
+#-----------------------------------------------------------------------
+#	Merge Objects into one file
+#-----------------------------------------------------------------------
+$(reqdObjs)$(appName).mi        : $(appRscs)
+    $(msg)
+    >$(o)make.opt
+    -o$@
+    $(appRscs)
+    <
+    $(RLibCmd) @$(o)make.opt
+    ~time
+
+#----------------------------------------------------------------------
+# copy the transkit resource to the transkit directory
+#----------------------------------------------------------------------
+TRANSKIT_RSCS       = $(baseDir)$(sAppName)rsc.mki 
+
+TRANSKIT_INCLUDE    = $(privateInc)$(appName).h 
+
+TRANSKIT_LANG       = $(langSpec)*.*
+
+#----------------------------------------------------------------------
+# complete construction of the .ma
+#----------------------------------------------------------------------
+%include $(baseDir)$(appName)rsc.mki
